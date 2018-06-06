@@ -1,0 +1,7 @@
+#game-container {
+	position: relative;
+}
+
+#game-container * {
+	position: absolute;
+}

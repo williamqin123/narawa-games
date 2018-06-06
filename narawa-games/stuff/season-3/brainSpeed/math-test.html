@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>BrainSpeed: How Smart Are You?</title>
+		<meta name="description" content="Narawa Games invents a product called BrainSpeed. It measures how fast you can calculate numbers! Take the test, and compare (your score) with others.">
+		<link rel="stylesheet" type="text/css" href="../../library/commonCore.css">
+		<style type="text/css">
+			body, html {
+				line-height: 1;
+				font-family: "Helvetica Neue", sans-serif;
+				color: white;
+				position: relative;
+				text-align: center;
+			}
+			html {
+				font-size: 1em;
+				background-color: mediumblue;
+				min-height: 100%;
+				overflow: auto;
+			}
+			body {
+				margin: 5rem 3rem;
+				font-size: 4rem;
+				overflow: hidden;
+			}
+			h1 {
+				font-size: 5rem;
+			}
+			h3, h1 {
+				margin: 0 0 1rem 0;
+			}
+			h3, button {
+				font-size: 2rem;
+			}
+			button {
+				appearance: none;
+				border-width: 2px 0 0 2px;
+				border-style: solid;
+				border-color: white;
+				border-radius: 1rem 0 0 0;
+				padding: 1rem 2rem;
+				box-shadow: inset 2px 2px mediumblue;
+				background-color: transparent;
+				color: inherit;
+				line-height: inherit;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+			}
+			button:hover {
+				color: mediumblue !important;
+				background-color: white;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript">
+			var number1, number2, continueBtn, bodyUp, addUp, htmlyo;
+			var webkit=false;
+			var level=0;
+			var score=0;
+			function end() {
+				bodyUp.slideUp(1000);
+				$(window).off();
+				window.setTimeout(function () {
+					var index=Math.round((score-400)/600);
+					if (index<0) {
+						index=0;
+					}
+					else if (index>4) {
+						index=4;
+					}
+					bodyUp.html("<h3>Your (Approximate) BrainSpeed score is:</h3><h1>"+score+" POINTS!</h1><br><h3>That type&ndash;of score is "+["extremely super&ndash;idiotic!", "slightly below average.", "about average level.", "smartly above average.", "awesomely super&ndash;GENIUS!"][index]+"</h3><button id='replay'>Replay &gt;</button>");
+					$("#replay").on("click", function () {
+						window.location.reload(false);
+					});
+					bodyUp.slideDown(1000);
+				}, 1000);
+			}
+			function hit(event) {
+				var kbdev;
+				if (webkit==true) {
+					kbdev=event.originalEvent.keyIdentifier;
+				}
+				else {
+					kbdev="Digit";
+					switch (event.originalEvent.keyCode) {
+						case (48):
+							kbdev+="0";
+							break;
+						case (49):
+							kbdev+="1";
+							break;
+						case (50):
+							kbdev+="2";
+							break;
+						case (51):
+							kbdev+="3";
+							break;
+						case (52):
+							kbdev+="4";
+							break;
+						case (53):
+							kbdev+="5";
+							break;
+						case (54):
+							kbdev+="6";
+							break;
+						case (55):
+							kbdev+="7";
+							break;
+						case (56):
+							kbdev+="8";
+							break;
+						case (57):
+							kbdev+="9";
+							break;
+					}
+				}
+				if (kbdev.substr(5, 1)==addUp.toString()) {
+					score+=75;
+					next();
+				}
+				else {
+					if (score>=50) {
+						score-=50;
+					}
+					htmlyo.css("background-color", "crimson");
+					window.setTimeout(function () {htmlyo.css("background-color", "mediumblue");}, 200);
+				}
+			}
+			function getRandPro() {
+				var oldAddup=addUp;
+				number1=Math.floor(Math.random()*10);
+				number2=Math.floor(Math.random()*10);
+				while (number1+number2>=10) {
+					var randit=Math.floor(Math.random()*2);
+					if (randit==0) {
+						number2--;
+					}
+					else if (randit==1) {
+						number1--;
+					}
+				}
+				addUp=number1+number2;
+				if (addUp==oldAddup) {
+					getRandPro();
+				}
+				return number1+" + "+number2+" =";
+			}
+			function next() {
+				level++;
+				bodyUp.html("<h3>Question #"+level+":</h3><h1>"+getRandPro()+"</h1><br><h3>Press the correct number&ndash;key on your keyboard!</h3>");
+			}
+			function startBrainSpeed() {
+				bodyUp.slideUp(1000);
+				window.setTimeout(function () {
+					bodyUp.slideDown(1000);
+					next();
+					$(window).on("keyup", hit);
+				}, 1000);
+			}
+			$(document).ready(function () {
+				continueBtn=$("#continue");
+				bodyUp=$("body");
+				htmlyo=$("html");
+				webkit=navigator.userAgent.indexOf("WebKit")>=0;
+				continueBtn.on("click", function () {
+					window.setTimeout(end, 32000);
+					startBrainSpeed();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-46623054-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+		<h1>BrainSpeed: Take the Test.</h1>
+		<h3>How many problems can you complete in 30 seconds?</h3>
+		<button id="continue">Let&apos;s Find Out &gt;</button>
+	</body>
+</html>

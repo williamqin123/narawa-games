@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cloned Infinity Game Boss Battle</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="/jquery-ui/jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="/jquery-ui/jquery-ui.structure.min.css">
+		<link rel="stylesheet" type="text/css" href="/jquery-ui/jquery-ui.theme.min.css">
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+		<script type="text/javascript">
+			var youx=100;
+			var youy=300;
+			var himx=850;
+			var himy=300;
+			var currentyou=0;
+			var currenthim=0;
+			var yrotated=false;
+			var fightedyou=false;
+			var fightedhim=false;
+			var hrotated=true;
+			var hishealth=100;
+			var yourhealth=300;
+			var nogoyou=false;
+			var nogohim=false;
+			var loadedcounter=0;
+			var srcs=["punch.png", "poke.png", "hit.png", "block.png"];
+			function redirect() {
+				window.location="platformer.html"+window.location.search;
+			}
+			function draw() {
+				window.canvas.clearRect(0, 0, 1200, 800);
+				if (currentyou>2200) {
+					currentyou=0;
+					window.youimage=new Image(); window.youimage.src="robo2.png"; fightedyou=false;
+				}
+				if (currenthim>2200) {
+					currenthim=0;
+					window.hisimage=new Image();
+					var random=srcs[Math.floor(Math.random()*4)];
+					window.hisimage.src=random;
+					if (random.indexOf("block")>=0) {
+						nogohim=true;
+					}
+					else {
+						nogohim=false;
+					}
+				}
+				if (himx+50>youx+350) {
+					himx=himx-10;
+					hrotated=true;
+				}
+				if (himx+350<youx+50) {
+					himx=himx+10;
+					hrotated=false;
+				}
+				window.canvas.fillText("You", youx+200, youy+75);
+				window.canvas.fillText("Clone", himx+200, himy+75);
+				var youimage2=youimage;
+				var hisimage2=hisimage;
+				var newyouimage=window.youimage.src.substring(window.youimage.src.lastIndexOf("/")+1, window.youimage.src.length-4)+"r";
+				var newhisimage=window.hisimage.src.substring(window.youimage.src.lastIndexOf("/")+1, window.hisimage.src.length-4)+"r";
+				if (yrotated==true) {
+					youimage2=eval(newyouimage);
+				}
+				if (hrotated==true) {
+					hisimage2=eval(newhisimage);
+				}
+				if (fightedyou==true) {
+					window.canvas.drawImage(hisimage2, currenthim, 0, 200, 200, himx, himy, 400, 400);
+					window.canvas.drawImage(youimage2, currentyou, 0, 200, 200, youx, youy, 400, 400);
+				}
+				else {
+					window.canvas.drawImage(youimage2, currentyou, 0, 200, 200, youx, youy, 400, 400);
+					window.canvas.drawImage(hisimage2, currenthim, 0, 200, 200, himx, himy, 400, 400);
+				}
+				if (himx<youx+400 && himx+400>youx && nogohim==false && nogoyou==false) {
+					if (fightedyou==true) {
+						hishealth=hishealth-1;
+					}
+					yourhealth=yourhealth-1;
+				}
+				$("#you")[0].value=yourhealth;
+				$("#him")[0].value=hishealth;
+				if (yourhealth<=1) {
+					setTimeout(function () {window.location.reload();}, 5000);
+					$("#lose").dialog({modal: true, title: "You Lost!"});
+				}
+				if (hishealth<=1) {
+					$("#win").dialog({modal: true, title: "You Win!"});
+					redirect();
+					clearInterval(window.loadgamerun);
+				}
+				currentyou=currentyou+200;
+				currenthim=currenthim+200;
+			}
+			function move(event) {
+				if (event.keyCode=="37") {
+					yrotated=true;
+					youx=youx-25;
+				}
+				else if (event.keyCode=="39") {
+					yrotated=false;
+					youx=youx+25;
+				}
+				else {
+					currentyou=0;
+					fightedyou=true;
+					setTimeout(function () {fightedyou=false; nogoyou=false;}, 500);
+					if (event.keyCode=="90") {
+						window.youimage=new Image();
+						window.youimage.src="punch.png";
+					}
+					if (event.keyCode=="88") {
+						window.youimage=new Image();
+						window.youimage.src="poke.png";
+					}
+					if (event.keyCode=="67") {
+						window.youimage=new Image();
+						window.youimage.src="hit.png";
+					}
+					if (event.keyCode=="86") {
+						window.youimage=new Image();
+						window.youimage.src="block.png";
+						nogoyou=true;
+					}
+				}
+			}
+			function loadcount() {
+				loadedcounter++;
+			}
+			$(document).ready(function () {
+				window.canvas=$("#canvas")[0].getContext("2d");
+				window.youimage=new Image();
+				window.youimage.onload=loadcount;
+				window.youimage.src="robo2.png";
+				window.hisimage=new Image();
+				window.hisimage.onload=loadcount;
+				window.hisimage.src="robo2.png";
+				window.robo2r=new Image();
+				window.robo2r.onload=loadcount;
+				window.robo2r.src="robo2r.png";
+				window.punch=new Image();
+				window.punch.onload=loadcount;
+				window.punch.src="punch.png";
+				window.poke=new Image();
+				window.poke.onload=loadcount;
+				window.poke.src="poke.png";
+				window.hit=new Image();
+				window.hit.onload=loadcount;
+				window.hit.src="hit.png";
+				window.block=new Image();
+				window.block.onload=loadcount;
+				window.block.src="block.png";
+				window.punchr=new Image();
+				window.punchr.onload=loadcount;
+				window.punchr.src="punchr.png";
+				window.poker=new Image();
+				window.poker.onload=loadcount;
+				window.poker.src="poker.png";
+				window.hitr=new Image();
+				window.hitr.onload=loadcount;
+				window.hitr.src="hitr.png";
+				window.blockr=new Image();
+				window.blockr.onload=loadcount;
+				window.blockr.src="blockr.png";
+				$(window).on("keydown", move);
+				window.canvas.font="normal normal 100px sans-serif";
+				window.canvas.textAlign="center";
+				window.canvas.fillStyle="white";
+				window.canvas.fillText("Loading...", 600, 300);
+				window.loadedchecker=setInterval(function () {
+					if (loadedcounter>=11) {
+						window.canvas.font="normal bold 30px sans-serif";
+						$("#intro").dialog({modal: true, title: "Fight the Evil Clone!"});
+						clearInterval(window.loadedchecker);
+						window.loadgamerun=setInterval(draw, 50);
+					}
+				}, 100);
+			});
+		</script>
+	</head>
+	<body>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-46623054-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
+		<div id="intro">Now you have to fight a clone to stop him from taking over the world.</div>
+		<div id="win">You beat this cloned robot! But there are still more to fight.</div>
+		<div id="lose">Your robot died. But dont worry, there are still a bunch more clones who haven't carried out their evil plan.</div>
+		<audio src="music.mp3" autoplay loop></audio>
+		<div>
+			<meter max="300" id="you" optimum="300" low="60" high="120"></meter>
+			<meter max="100" id="him" optimum="100" low="20" high="40"></meter>
+		</div>
+		<canvas width="1200" height="700" id="canvas"></canvas>
+	</body>
+</html>

@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				background-image: url("battle.jpg");
+				height: 480px;
+				width: 640px;
+				background-repeat: no-repeat;
+				background-position: center;
+				margin: 0px;
+			}
+			#proxy, #avatar {
+				z-index: 100;
+				width: 100px;
+				height: 100px;
+				border-radius: 10px;
+			}
+			#proxy {
+				left: 50%;
+			}
+			.powerball {
+				width: 50px;
+				height: 50px;
+				z-index: -1;
+			}
+			.sprite {
+				position: absolute;
+			}
+		</style>
+		<script type="text/javascript">
+			var oldtime=new Date().getTime();
+			function callibrate(event) {
+				var avatar=document.getElementById("avatar");
+				avatar.style.left=event.clientX-50+"px";
+				avatar.style.top=event.clientY-50+"px";
+			}
+			function shoot(proxy, src, top, left) {
+				var body=document.getElementsByTagName("BODY")[0];
+				var powerball=document.createElement("IMG");
+				powerball.setAttribute("class", "powerball sprite");
+				powerball.setAttribute("src", src);
+				powerball.style.top=top-25+"px";
+				powerball.style.left=left-25+"px";
+				body.appendChild(powerball);
+				powerball.setAttribute("title", (proxy.offsetTop-powerball.offsetTop)/10+"/"+(proxy.offsetLeft-powerball.offsetLeft)/10);
+				setInterval(function () {
+					var slasher=powerball.title.indexOf("/");
+					powerball.style.top=powerball.offsetTop+parseInt(powerball.title.substring(0, slasher))+"px";
+					powerball.style.left=powerball.offsetLeft+parseInt(powerball.title.substring(slasher+1, powerball.title.length))+"px";
+					var touch=document.elementFromPoint(powerball.offsetLeft+25, powerball.offsetTop+25);
+					if (touch==proxy) {
+						proxy.title=parseInt(proxy.title)-1;
+						if (parseInt(proxy.title)<=0) {
+							proxy.style.display="none";
+							setTimeout(function () {window.location="main.html"}, 2500);
+						}
+					}
+				}, 100);
+			}
+			function drop(event) {
+				var proxy=document.getElementById("proxy");
+				if (new Date().getTime()>oldtime+500) {
+					shoot(proxy, "powerball.png", event.clientY, event.clientX);
+				}
+				oldtime=new Date().getTime();
+			}
+			function detectchar() {
+				var proxy=document.getElementById("proxy");
+				var avatar=document.getElementById("avatar");
+				proxy.style.top=proxy.offsetTop-(proxy.offsetTop-avatar.offsetTop)/20;
+				proxy.style.left=proxy.offsetLeft-(proxy.offsetLeft-avatar.offsetLeft)/20;
+				var stringval="linear-gradient(to right, lime 0%, lime val%, red val%, red 100%)";
+				proxy.style.background=stringval.replace(/val/g, 100/(window.vardo/proxy.title));
+				avatar.style.background=stringval.replace(/val/g, 100/(window.vardo2/avatar.title));
+				console.log(proxy.style.background);
+			}
+			function setup() {
+				var proxy=document.getElementById("proxy");
+				var avatar=document.getElementById("avatar");
+				var query=window.location.search;
+				proxy.title=query.substring(query.indexOf("level=")+6, query.length);
+				avatar.title=query.substring(query.indexOf("you=")+4, query.length);
+				window.vardo=parseInt(proxy.title);
+				window.vardo2=parseInt(avatar.title);
+				window.addEventListener("mousemove", callibrate);
+				setInterval(function () {shoot(avatar, "powerball2.png", proxy.offsetTop+50, proxy.offsetLeft+50)}, 1000);
+			}
+		</script>
+	</head>
+	<body onclick="drop(event)" onload="setup(); setInterval(detectchar, 100)">
+		<img src="boss.png" id="proxy" class="sprite">
+		<img src="avatar.png" id="avatar" class="sprite">
+	</body>
+</html>

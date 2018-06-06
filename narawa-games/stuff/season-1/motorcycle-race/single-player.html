@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>Cow Head to Head</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			#cow {
+				position: fixed;
+				top: 250px;
+			}
+			#bull {
+				position: absolute;
+				bottom: 250px;
+			}
+			.sprite {
+				width: 100px;
+				height: 100px;
+				z-index: 25;
+				left: 500px;
+			}
+			.object {
+				z-index: 100;
+				position: absolute;
+				height: 150px;
+				width: 150px;
+			}
+			#road {
+				height: 100%;
+				width: 10000px;
+				position: relative;
+				background-image: url("grounddirt.png");
+				background-size: 400px;
+				overflow: hidden;
+			}
+			body {
+				overflow: hidden;
+				margin: 0px;
+			}
+			html, body {
+				width: 100%;
+				height: 100%;
+				position: relative;
+			}
+		</style>
+		<script type="text/javascript">
+			var count=0;
+			var run=20;
+			function steer(event) {
+				var direction=0;
+				var cow=document.getElementById("cow");
+				if (event.keyCode=="38") {
+					direction=-15;
+				}
+				else if (event.keyCode=="40") {
+					direction=15;
+				}
+				cow.style.top=cow.offsetTop+direction+"px";
+			}
+			function detectchar() {
+				var cow=document.getElementById("cow");
+				var bull=document.getElementById("bull");
+				var container=document.getElementById("road");
+				var thing=document.elementFromPoint(cow.getBoundingClientRect().left+50, cow.offsetTop+50);
+				var thing2=document.elementFromPoint(bull.getBoundingClientRect().left+50, bull.offsetTop+50);
+				if (thing.className=="object") {
+					thing.style.display="none";
+					run=0;
+					setTimeout(function () {run=20}, 100);
+				}
+				count=count+1;
+				if (count<=1) {
+					go=Math.floor(Math.random()*21)-10;
+				}
+				if (count>Math.floor(Math.random()*25)+50) {
+					count=0;
+				}
+				if (bull.offsetTop<0) {
+					go=20;
+				}
+				if (bull.offsetTop+74>window.innerHeight) {
+					go=-20;
+				}
+				bull.style.top=bull.offsetTop+go+"px";
+				if (thing2!==null) {
+					if (thing2.className!="object") {
+						bull.style.left=bull.offsetLeft+20+"px";
+					}
+					else {
+						setTimeout(function () {thing2.style.display="none"}, 100);
+					}
+				}
+				else {
+					bull.style.left=bull.offsetLeft+20+"px";
+				}
+				container.style.left=container.offsetLeft-run+"px";
+			}
+			function setup() {
+				var container=document.getElementById("road");
+				for (var x=0; x<=100; x++) {
+					var obstacle=document.createElement("IMG");
+					obstacle.setAttribute("src", "block.png");
+					obstacle.setAttribute("class", "object");
+					obstacle.style.left=x*100+"px";
+					obstacle.style.top=Math.floor(Math.random()*100)+"%";
+					container.appendChild(obstacle);
+				}
+				window.move=setInterval(detectchar, 50);
+			}
+		</script>
+	</head>
+	<body onload="setup()" onkeydown="steer(event)">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+		<audio loop autoplay>
+			<source src="spula.m4a">
+			<source src="spula.mp3">
+		</audio>
+		<div id="road">
+			<img src="bullup.png" id="bull" class="sprite">
+		</div>
+		<img src="cow.png" id="cow" class="sprite">
+	</body>
+</html>

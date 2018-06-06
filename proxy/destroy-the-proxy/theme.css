@@ -1,0 +1,40 @@
+body {
+	margin: 0px;
+	overflow: hidden;
+}
+#container {
+	width: 2000px;
+	height: 2000px;
+	top: 600px;
+}
+.portal {
+	width: 100px;
+	height: 100px;
+}
+.forest {
+	background-image: url("forest.png");
+}
+.platform {
+	width: 226px;
+	height: 25px;
+}
+.powerball {
+	width: 50px;
+	height: 50px;
+	z-index: 1000;
+}
+#avatar {
+	width: 76px;
+	height: 76px;
+	z-index: 100;
+	left: 50%;
+	top: 50%;
+	margin: -38px;
+}
+#avatar, #container {
+	position: fixed;
+}
+.sprite {
+	position: absolute;
+	z-index: 500;
+}

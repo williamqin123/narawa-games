@@ -1,0 +1,158 @@
+<html>
+	<head>
+		<title>Mortal Strike</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="battle.js"></script>
+	</head>
+	<body>
+		<div id="game-container" class="white">
+			<div id="menu">
+				<h1>Mortal Strike: Heroes Of Fighting</h1>
+				<p class="help">
+					Drag cards into the card slots below to create a deck. You must have 8 cards in your deck.
+				</p>
+				<table id="deck">
+					<tr>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+					</tr>
+				</table>
+				<p class="help">
+					Buy and upgrade your cards. New cards are unlocked as your skill increases.
+				</p>
+				<table id="inventory">
+					<tr>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+							<div class="card-slot"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="game">
+				<table id="status-bar">
+					<tr>
+						<td>
+							Opponent score: 0
+						</td>
+						<td>
+							Time left: 3:00
+						</td>
+						<td>
+							Your score: 0
+						</td>
+					</tr>
+				</table>
+				<div id="board">
+					<table id="opponent-cards">
+						<tr>
+							<td>
+								<div class="card-slot" data-row="1" data-column="1">
+								</div>
+							</td>
+							<td>
+								<div class="card-slot" data-row="1" data-column="2">
+									<div class="card" data-owner="player">
+										<img src="cocbarb.png" class="card-image">
+										<div class="card-stats">
+											Barbarian
+											HP: 500
+											Damage: 25
+										</div>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="card-slot" data-row="1" data-column="3">
+
+								</div>
+							</td>
+							<td>
+								<div class="card-slot" data-row="1" data-column="4">
+
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<hr>
+				<table id="player-hand">
+					<tr>
+						<td>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+						</td>
+						<td>
+							<div class="card-slot"></div>
+						</td>
+					</tr>
+				</table>
+				<table id="player-hand">
+					<tr>
+						<td>
+							<div class="energy-bar" id="fire"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="energy-bar" id="lightning"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="energy-bar" id="darkness"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

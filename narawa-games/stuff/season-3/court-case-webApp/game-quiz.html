@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<title>Supreme Court: Quiz Cases!</title>
+		<meta name="description" content="Narawa Games presents. . . A United States Supreme Court game! The objective is to correctly identify wether the suspect is guilty or innocent. This contains funny jokes, but please don&apos;t take these seriously.">
+		<link rel="stylesheet" type="text/css" href="../../library/commonCore.css">
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:400,700">
+		<style type="text/css">
+			html {
+				font-size: 1em;
+				background-image: url("bg.jpg");
+				background-size: cover;
+				background-position: center;
+				min-height: 100%;
+				min-width: 1000px;
+			}
+			html, body {
+				margin: 0;
+				position: relative;
+				font-family: "Merriweather", sans-serif;
+				color: #333;
+			}
+			body {
+				margin: 2.5rem 3.5rem;
+				padding: 2rem 3rem;
+				background-color: white;
+				line-height: 1.5;
+				box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25), 0 0 0 2px rgba(0, 0, 0, 0.25);
+				font-size: 1.3rem;
+				max-width: 1400px;
+			}
+			#next-container {
+				text-align: right;
+			}
+			#buttons {
+				text-align: center;
+				font-size: 0;
+			}
+			button:hover {
+				background: linear-gradient(to bottom, lightsteelblue 0, #669 5%, #447 49%, #336 51%, #114 100%) !important;
+			}
+			button {
+				appearance: none;
+				font-size: 1.5rem;
+				font-family: inherit;
+				margin: 0 0.2rem;
+			}
+			button, strong {
+				background: linear-gradient(to bottom, silver 0, #666 5%, #444 49%, #333 51%, #111 100%);
+			}
+			button, #reply, strong {
+				padding: 1rem 1.5rem;
+				color: white;
+				text-shadow: 0 -1px rgba(0, 0, 0, 0.25), 0 -2px rgba(0, 0, 0, 0.25);
+				box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+				border: none;
+				border-radius: 0.5rem;
+			}
+			html body #question strong {
+				float: left;
+				margin-right: 1rem;
+				margin-bottom: 0.5rem;
+				font-size: 2rem;
+			}
+			strong, button {
+				display: inline-block;
+			}
+			#question {
+				font-size: 2rem;
+				margin-bottom: 1rem;
+			}
+			h1 {
+				text-align: center;
+				margin: 1rem 0;
+				font-variant: normal;
+				font-size: 3rem;
+			}
+			#reply {
+				margin: 0 -1.5rem 1rem -1.5rem;
+				background: linear-gradient(to bottom, #13e, royalblue);
+			}
+		</style>
+		<script type="text/javascript">
+			var question, buttons, guilty, innocent, undecided, reply, correct, action, suspect, result, results, container, person;
+			var count=0;
+			function rand(array) {
+				return array[Math.floor(Math.random()*array.length)];
+			}
+			function verify(event) {
+				reply.show();
+				var exclaim, absolute;
+				switch (event.target.id) {
+					case ("guilty"):
+						if (correct==results[0]) {
+							exclaim="You chose guilty. No";
+							absolute="wrong.";
+							reply.css("background", "linear-gradient(to bottom, maroon, firebrick)");
+						}
+						else {
+							exclaim="You chose guilty. Yes";
+							absolute="right.";
+							reply.css("background", "linear-gradient(to bottom, darkgreen, forestgreen)");
+						}
+						break;
+					case ("innocent"):
+						if (correct==results[1]) {
+							exclaim="You chose innocent. No";
+							absolute="wrong.";
+							reply.css("background", "linear-gradient(to bottom, maroon, firebrick)");
+						}
+						else {
+							exclaim="You chose innocent. Yes";
+							absolute="right.";
+							reply.css("background", "linear-gradient(to bottom, darkgreen, forestgreen)");
+						}
+						break;
+					case ("undecided"):
+						exclaim="You said there wasn&apos;t enough evidence. No, there is enough evidence";
+						absolute="stupid for choosing, &ldquo;Not Enough Evidence!&rdquo;";
+						reply.css("background", "linear-gradient(to bottom, chocolate, darkorange)");
+						break;
+				}
+				buttons.hide();
+				container.show();
+				reply.html(exclaim+correct+absolute);
+			}
+			function newCase() {
+				count++;
+				reply.hide();
+				person=rand(["bikini girl", "brain-fugged retard", "MineCraft fan", "One Direction groupie", "Utopian Elders", "rock-star with an overgrown chin"]);
+				suspect=rand(["weirdo with half a brain", "idiot", "bank-robber", "Avengers", "Narawa Games Inventor", "swaggy rapper", "moron"]);
+				result=rand(["injured buttocks", "hit off a cliff", "dead", "hurt feelings", "robbed from an arsenal", "trolled on MineCraft", "choked for a whole year straight", "mortally wounded", "brain-retarded", "a damaged brain"]);
+				action=rand(["getting punched", "being sold an alcoholic soda drink", "being forced to fight", "slamming into the refrigerator", "his teeth pulled off"]);
+				question.html("<strong>#"+count+".</strong>A "+person+" got "+result+" due to "+action+" by the "+suspect+". Is the "+suspect+" guilty or innocent?");
+				results=["! The "+person+" intentionally wanted "+action+". As a result, he was happy for the "+suspect+" doing that. He intentionally wanted to get "+result+", so the "+suspect+" is innocent. You&apos;re ", "! The "+person+" didn&apos;t want "+action+". So he did the right thing, to sue the "+suspect+" for doing that. The suspect is guilty. You&apos;re "];
+				correct=rand(results);
+				buttons.show();
+				container.hide();
+			}
+			$(document).ready(function () {
+				question=$("#question");
+				buttons=$("#buttons");
+				guilty=$("#guilty");
+				innocent=$("#innocent");
+				undecided=$("#undecided");
+				reply=$("#reply");
+				container=$("#next-container");
+				buttons.hide();
+				$("#buttons button").on("click", verify);
+				$("#next").on("click", function () {
+					newCase();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<div id="reply">
+			<h1>Narawa Games: U.S. Supreme Court Cases!</h1>
+		</div>
+		<div id="question">
+			Welcome to Supreme Court Cases, a quiz-type game powered by jQuery and jQuery UI.
+			Click the &ldquo;Next Case&rdquo; button to start!<br><br>
+			By the way, the funny jokes, like &ldquo;alcoholic soda-cans&rdquo; aren&apos;t meant to be taken seriously.
+		</div>
+		<div id="next-container">
+			<button id="next">Next Case!</button>
+		</div>
+		<div id="buttons">
+			<button id="guilty">Guilty!</button>
+			<button id="undecided">Not Enough Evidence!</button>
+			<button id="innocent">Innocent!</button>
+		</div>
+	</body>
+</html>

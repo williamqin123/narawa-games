@@ -1,0 +1,20 @@
+@import url("../library/commonCore.css") all;
+html {
+	font-size: 16px;
+}
+.game, .card {
+	box-shadow: 0 0 1.5rem -0.5rem black;
+}
+#game-container-theater, #game-container-theater-child {
+	background-color: #333;
+	min-height: 100%;
+}
+#game-container-theater {
+	min-width: 100%;
+}
+.card {
+	padding: 1rem;
+}
+a {
+	display: inline-block !important;
+}

@@ -1,0 +1,56 @@
+html {
+	font-size: 16px;
+}
+body {
+	margin: 1rem;
+	position: relative;
+}
+html, body {
+	font-family: sans-serif;
+	background-color: #320;
+}
+#game-container * {
+	color: inherit;
+}
+.selected {
+	background-color: #740 !important;
+}
+.card-image {
+	width: 100px;
+	height: 120px;
+	position: absolute;
+}
+#status-bar {
+	background-color: black;
+}
+.card-slot {
+	border-radius: 0.5rem;
+	width: 100px;
+	height: 120px;
+	background-color: #530;
+}
+.white {
+	color: white;
+}
+.black {
+	color: #333 !important;
+}
+.card {
+	position: relative;
+}
+.card-stats {
+	position: relative;
+	z-index: 200;
+	text-shadow: 0 0 2px black, 0 0 5px black;
+}
+table {
+	border-spacing: 1rem;
+	table-layout: fixed;
+	width: 100%;
+}
+hr {
+	border: none;
+	background-color: gray;
+	height: 2px;
+	margin: none;
+}

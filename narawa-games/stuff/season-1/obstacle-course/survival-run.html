@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Obstacle Course</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			html, body {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background-color: maroon;
+			}
+			body {
+				margin: 0px;
+			}
+			.coin::before {
+				background: url("coin.png") center top no-repeat;
+				background-size: 50px;
+				content: "";
+				animation: spin 1s linear infinite;
+				-webkit-animation: spin 1s linear infinite;
+			}
+			.coin, .coin::before {
+				position: absolute;
+				width: 50px;
+				height: 100px;
+				z-index: 5000;
+			}
+			#avatar {
+				background-size: auto 100%;
+				background-image: url("person2.png");
+				width: 100px;
+				height: 100px;
+				position: fixed;
+				top: 0px;
+				left: 40%;
+				background-position: -200px 0px;
+				z-index: 2000;
+			}
+			.obstacle[title="gear"] {
+				background-image: url("gear.png");
+				background-size: 100% 100%;
+				animation: spear 10s linear infinite;
+				-webkit-animation: spear 10s linear infinite;
+				bottom: 400px;
+				height: 100px;
+				width: 100px;
+				background-color: transparent;
+			}
+			.obstacle[title="ball"] {
+				bottom: 200px;
+				border-radius: 50px;
+				height: 100px;
+				width: 100px;
+				background: tomato;
+			}
+			.obstacle[title="ball"]::before {
+				content: "";
+				width: 2px;
+				height: 1000px;
+				bottom: 100px !important;
+				background: black;
+				z-index: 500;
+				position: absolute;
+				margin-left: 50px;
+			}
+			.obstacle {
+				z-index: 1000;
+				position: absolute;
+				bottom: 0px;
+				background: url("dirt.png") repeat-x #473016;
+				border-radius: 5px 5px 0px 0px;
+			}
+			#container {
+				height: 100%;
+				width: 10000px;
+				position: relative;
+				overflow: hidden;
+				background-image: url("background.jpg");
+				box-shadow: 0px 0px 0px 1000px white;
+			}
+			@keyframes run {
+				0%, 20% {
+					background-position: 0px 0px;
+				}
+				20.1%, 40% {
+					background-position: -100px 0px;
+				}
+				40.1%, 60% {
+					background-position: -200px 0px;
+				}
+				60.1%, 80% {
+					background-position: -300px 0px;
+				}
+				80.1%, 100% {
+					background-position: -400px 0px;
+				}
+			}
+			@keyframes spear {
+				from {transform: rotate(0deg);}
+				to {transform: rotate(360deg);}
+			}
+			@keyframes spin {
+				from {transform: rotateY(0deg);}
+				to {transform: rotateY(360deg);}
+			}
+			@-webkit-keyframes spin {
+				from {-webkit-transform: rotateY(0deg);}
+				to {-webkit-transform: rotateY(360deg);}
+			}
+			@-webkit-keyframes run {
+				0%, 20% {
+					background-position: 0px 0px;
+				}
+				20.1%, 40% {
+					background-position: -100px 0px;
+				}
+				40.1%, 60% {
+					background-position: -200px 0px;
+				}
+				60.1%, 80% {
+					background-position: -300px 0px;
+				}
+				80.1%, 100% {
+					background-position: -400px 0px;
+				}
+			}
+			@-webkit-keyframes spear {
+				from {-webkit-transform: rotate(0deg);}
+				to {-webkit-transform: rotate(360deg);}
+			}
+		</style>
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script type="text/javascript">
+			var on=false;
+			window.jump=null;
+			var distance=[-75, 0, 0, 0, 100, 200, 250];
+			function gravity() {
+				if ($("#avatar")[0].offsetTop+100>window.innerHeight) {
+					$("#container")[0].style.opacity="0.5";
+					alert("FAILED! You fell onto the ground. Close this message to try again.");
+					setTimeout(function () {window.location.reload(false)}, 1000);
+					clearInterval(window.game);
+				}
+				var touched=document.elementFromPoint($("#avatar")[0].getBoundingClientRect().left+50, $("#avatar")[0].offsetTop+101);
+				if (touched.className!="obstacle") {
+					$("#avatar")[0].style.top=$("#avatar")[0].offsetTop+20+"px";
+					on=false;
+				}
+				else {
+					if (touched.title=="gear") {
+						$("#container")[0].style.left=$("#container")[0].offsetLeft-2+"px";
+					}
+					if (touched.offsetTop<= $("#avatar")[0].offsetTop+25) {
+						$("#avatar")[0].style.top=$("#avatar")[0].offsetTop+20+"px";
+						on=false;
+					}
+					else {
+						on=true;
+					}
+				}
+				if (touched.className=="coin") {
+					touched.style.display="none";
+				}
+			}
+			function smooth(event, code) {
+				eval(code);
+				setTimeout(function () {eval(code)}, 50);
+			}
+			function move(event) {
+				smooth(event, "$('#container')[0].style.left=$('#container')[0].offsetLeft-(event.keyCode-38)*13+'px';");
+				if (window.game!=null) {
+					$("#avatar").css({"animation":"run 0.5s linear alternate infinite"});
+				}
+				if (event.keyCode=="38") {
+					if (on==true && window.jump==null) {
+						clearInterval(window.game);
+						window.game=null;
+						var count=0;
+						window.jump=setInterval(function () {
+							on=false;
+							$("#avatar")[0].style.top=$("#avatar")[0].offsetTop-(20-count)+"px";
+							count++;
+							if (count>=25) {
+								window.game=setInterval(gravity, 50);
+								setTimeout(function () {window.jump=null}, 10);
+								clearInterval(window.jump);
+							}
+						}, 50);
+					}
+				}
+				else {
+					$("#avatar").css({"transform":"rotateY("+((event.keyCode-39)*90)+"deg)"});
+				}
+			}
+			$(document).ready(function () {
+				var oldwidth=0;
+				for (x=0; x<50; x++) {
+					var platform=document.createElement("div");
+					platform.className="obstacle";
+					$("#container")[0].appendChild(platform);
+					var rand=Math.floor(Math.random()*4);
+					var coin=document.createElement("div");
+					coin.className="coin";
+					$("#container")[0].appendChild(coin);
+					if (rand==1) {
+						platform.title="ball";
+						platform.style.left=oldwidth+"px";
+						oldwidth=oldwidth+platform.offsetWidth+Math.floor(Math.random()*225);
+					}
+					if (rand==2) {
+						platform.title="gear";
+						platform.style.left=oldwidth+"px";
+						oldwidth=oldwidth+platform.offsetWidth+(Math.floor(Math.random()*50)-50);
+					}
+					if (rand==3 || rand==0) {
+						platform.style.height=Math.floor(Math.random()*220)+110+"px";
+						platform.style.width=Math.floor(Math.random()*335)+65+"px";
+						platform.style.left=oldwidth+"px";
+					}
+					coin.style.top=platform.offsetTop-60+"px";
+					coin.style.left=platform.offsetLeft+(platform.offsetWidth/2-25)+"px";
+					oldwidth=oldwidth+platform.offsetWidth+distance[Math.floor(Math.random()*7)];
+				}
+				window.game=setInterval(gravity, 50);
+			});
+		</script>
+	</head>
+	<body onkeydown="move(event);" onkeyup="$('#avatar').css({'animation':'none'});">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<div id="container" class="cpucont">
+			<div id="avatar"></div>
+		</div>
+	</body>
+</html>

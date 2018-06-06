@@ -1,0 +1,168 @@
+<!--Escape From the Turkey Hunter 1.01 Beta-->
+
+<!doctype html>
+<html>
+	<head>
+		<title>Escape From the Turkey Hunter!</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="mainstyle.css">
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script type="text/javascript">
+			var canvas;
+			var loadCounter=0;
+			var bgPos=0;
+			var level=0;
+			var turkeyPos=[800, 400];
+			var hunterPos=[100, 100];
+			var mudPos=[];
+			var keyPress;
+			var speed=5;
+			var survivalTime=30;
+			function randomMud() {
+				mudPos=[];
+				for (x=0; x<level; x++) {
+					mudPos.push([Math.floor(Math.random()*880)+10, Math.floor(Math.random()*480)+10]);
+				}
+			}
+			function touching(element1, element2) {
+				if (element1[0]+90>element2[0]+10 && element1[0]+10<element2[0]+90) {
+					if (element1[1]+90>element2[1]+10 && element1[1]+10<element2[1]+90) {
+						return true;
+					}
+				}
+			}
+			function nextLevel() {
+				level++;
+				survivalTime=30;
+				turkeyPos=[800, 400];
+				hunterPos=[100, 100];
+				randomMud();
+			}
+			function draw() {
+				speed=12;
+				canvas.clearRect(0, 0, 1000, 600);
+				for (n=0; n<mudPos.length; n++) {
+					if (touching(turkeyPos, mudPos[n])==true) {
+						speed=3;
+					}
+					canvas.drawImage(window.mud, bgPos, 0, 100, 100, mudPos[n][0], mudPos[n][1], 100, 100);
+				}
+				var horizontalCoords=turkeyPos[0]-hunterPos[0];
+				var verticalCoords=turkeyPos[1]-hunterPos[1];
+				if (horizontalCoords==0) {
+					horizontalCoords=1;
+				}
+				if (verticalCoords==0) {
+					verticalCoords=1;
+				}
+				var processHorizCoords=(horizontalCoords/Math.abs(horizontalCoords))*4;
+				var processVertiCoords=(verticalCoords/Math.abs(verticalCoords))*4;
+				hunterPos[0]+=processHorizCoords;
+				hunterPos[1]+=processVertiCoords;
+				if (touching(turkeyPos, hunterPos)==true) {
+					window.location="dead-turkey.html";
+				}
+				if (keyPress=="37") {
+					turkeyPos[0]=turkeyPos[0]-speed;
+				}
+				if (keyPress=="38") {
+					turkeyPos[1]=turkeyPos[1]-speed;
+				}
+				if (keyPress=="39") {
+					turkeyPos[0]=turkeyPos[0]+speed;
+				}
+				if (keyPress=="40") {
+					turkeyPos[1]=turkeyPos[1]+speed;
+				}
+				canvas.drawImage(window.turkey, bgPos, 0, 100, 100, turkeyPos[0], turkeyPos[1], 100, 100);
+				if (turkeyPos[0]-hunterPos[0]>Math.abs(turkeyPos[1]-hunterPos[1])) {
+					window.hunter=window.mainHunter;
+				}
+				if (hunterPos[0]-turkeyPos[0]>Math.abs(turkeyPos[1]-hunterPos[1])) {
+					window.hunter=window.reverseHunter;
+				}
+				if (turkeyPos[1]-hunterPos[1]>Math.abs(turkeyPos[0]-hunterPos[0])) {
+					window.hunter=window.frontHunter;
+				}
+				if (hunterPos[1]-turkeyPos[1]>Math.abs(turkeyPos[0]-hunterPos[0])) {
+					window.hunter=window.backHunter;
+				}
+				canvas.drawImage(window.hunter, bgPos, 0, 100, 100, hunterPos[0], hunterPos[1], 100, 100);
+				bgPos+=100;
+				if (bgPos>=1000) {
+					bgPos=0;
+				}
+				var textTimeLeft="Time Left: "+survivalTime;
+				var textLevelCount="Level "+level;
+				survivalTime=(survivalTime-0.1).toFixed(1);
+
+				canvas.strokeText(textTimeLeft, 805, 60, 390);
+				canvas.strokeText(textLevelCount, 105, 60, 190);
+
+				canvas.fillText(textTimeLeft, 805, 60, 390);
+				canvas.fillText(textLevelCount, 105, 60, 190);
+
+				if (survivalTime<=0) {
+					nextLevel();
+				}
+			}
+			function loadImage() {
+				loadCounter++;
+				//10;
+				if (loadCounter>=4) {
+					window.hunter=window.mainHunter;
+					window.turkey=window.mainTurkey;
+					setInterval(draw, 100);
+				}
+			}
+			$(document).ready(function () {
+				canvas=$("canvas")[0].getContext("2d");
+				canvas.imageSmoothingEnabled=false;
+				canvas.textBaseline="bottom";
+				canvas.font="50px sans-serif";
+				canvas.fillStyle="white";
+				canvas.strokeStyle="#931";
+				canvas.lineWidth=6;
+				canvas.lineJoin="miter";
+				canvas.miterLimit=3;
+				canvas.textAlign="center";
+
+				canvas.strokeText("Loading...", 500, 325, 800);
+				canvas.fillText("Loading...", 500, 325, 800);
+
+				window.mainTurkey=new Image();
+				window.mainTurkey.onload=loadImage;
+				window.mainTurkey.src="turkey.png";
+
+				window.mainHunter=new Image();
+				window.mainHunter.onload=loadImage;
+				window.mainHunter.src="hunter.png";
+
+				window.reverseHunter=new Image();
+				window.reverseHunter.onload=loadImage;
+				window.reverseHunter.src="reverseHunter.png";
+
+				window.backHunter=new Image();
+				window.backHunter.onload=loadImage;
+				window.backHunter.src="backHunter.png";
+
+				window.frontHunter=new Image();
+				window.frontHunter.onload=loadImage;
+				window.frontHunter.src="frontHunter.png";
+
+				window.mud=new Image();
+				window.mud.onload=loadImage;
+				window.mud.src="mud.png";
+
+				nextLevel();
+				$(window).on("keydown", function (event) {keyPress=event.keyCode;});
+				$(window).on("keyup", function (event) {keyPress=null;});
+			});
+		</script>
+	</head>
+	<body>
+		<canvas width="1000" height="600" id="maingame"></canvas>
+	</body>
+</html>
+
+<!--Escape From the Turkey Hunter 1.01 Beta-->

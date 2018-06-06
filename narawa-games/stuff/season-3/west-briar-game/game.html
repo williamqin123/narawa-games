@@ -1,0 +1,133 @@
+<html>
+	<head>
+		<title>West Briar Middle School: the Game</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="episode-1.js"></script>
+		<script type="text/javascript">
+			var storyline;
+			var cache = {};
+			function goToPoint(point) {
+				$("#content-box").html(storyline[point]);
+				$(".replace-with").each(function() {
+					$(this).html(
+						cache[$(this).attr("data-replace")]
+					);
+				});
+				console.log($(".replace-with").attr("data-replace"));
+			}
+
+			function switchScreen(elementID) {
+				$(".screen").hide();
+				$(elementID).show();
+			}
+
+			$(document).ready(function() {
+				switchScreen("#start-screen");
+			});
+		</script>
+		<style type="text/css">
+			html, body {
+				text-align: center;
+				font-family: sans-serif;
+				line-height: 1.5;
+				color: #333;
+			}
+			html {
+				font-size: 16px;
+			}
+			body {
+				font-size: 1.25rem;
+				margin: 2rem;
+			}
+			.choice-button {
+				border-radius: 0.5rem;
+			}
+			.padded {
+				padding: 1rem;
+			}
+			.shaded {
+				background-color: lightgray;
+			}
+			.top-bar {
+				margin: -2rem -2rem 2rem -2rem;
+			}
+			.shadow {
+				box-shadow: 0 0 0.5rem 0 black;
+			}
+
+			.small-image {
+				width: 50vw;
+				height: 50vw;
+				max-height: 50vh;
+				max-width: 50vh;
+				min-width: 10vw;
+				min-height: 10vw;
+			}
+
+			h2 {
+				margin: 2rem 0 2rem 0;
+			}
+
+			p {
+				margin: 1rem 0 1rem 0;
+			}
+			.dialogue-you {
+				background-color: lightgreen;
+			}
+			.dialogue-other {
+				background-color: lightblue;
+			}
+			.speaker-name {
+				font-weight: bold;
+				margin-bottom: 0.5rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="start-screen" class="screen">
+			<h1>West Briar Middle School: the Game</h1>
+			<h3>Made by William Qin</h3>
+			<div class="choice-button padded shaded" onclick="switchScreen('#episode-selection')">
+				<h3>Start</h3>
+				Go to episode selection screen
+			</div>
+		</div>
+		<div id="episode-selection" class="screen">
+			<h2>Episode Selection</h2>
+			<h3>Select which episode you want to play! Each episode has a different story.</h3>
+			<div id="episode-1" class="choice-button padded shaded" onclick="
+	switchScreen('#content-box-container'); episode1(); goToPoint('checkpoint-1')">
+				<img class="small-image" src="episode-1.png">
+				<h2>Episode 1</h2>
+				<p>
+					It's your first day at West Briar as a 6th grader, and you get your first glimpse of what middle school is like. Fights, drugs, and deaths: this episode is very hard!
+				</p>
+				<p class="padded dialogue-you">
+					<div class="speaker-name">You</div>
+					You said something.
+				</p>
+				<p class="padded dialogue-other">
+					<div class="speaker-name">Max</div>
+					Max said something.
+				</p>
+			</div>
+		</div>
+		<div id="content-box-container" class="screen">
+
+			<div class="top-bar padded shadow">
+				<div class="choice-button padded shaded" onclick="switchScreen('#episode-selection')">
+					Back to episode selection screen
+				</div>
+
+				Money: $<span id="money-amount">9999.99</span>
+
+				GPA: <span id="money-amount">100</span>%
+
+				Reputation: <span id="money-amount">0</span>
+			</div>
+			<div id="content-box">
+
+			</div>
+		</div>
+	</body>
+</html>

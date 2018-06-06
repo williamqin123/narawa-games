@@ -1,0 +1,188 @@
+* {
+	line-height: 1;
+	-webkit-box-sizing: content-box;
+	-ms-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+html, body {
+	color: #333;
+	margin: 0;
+	background-color: gainsboro;
+}
+html {
+	font-size: 16px;
+}
+* {
+	font-family: "Helvetica Neue", sans-serif;
+}
+#dialog, input:not([type="submit"]) {
+	color: inherit;
+}
+html body .dialog:not(#yousuck) {
+	top: 50%;
+	left: 50%;
+	right: initial;
+	background-color: white;
+	z-index: 20000;
+	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+	display: none;
+	overflow-y: scroll;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
+td.tag {
+	width: 15%;
+}
+input[type="submit"] {
+	border: none;
+}
+input[type="text"] {
+	border-width: 2px;
+}
+input[type="text"]:not(#mainmessage) {
+	display: inline-block;
+	margin-top: 0.5rem;
+}
+input {
+	font-size: inherit;
+	box-shadow: none;
+	-webkit-appearance: none;
+}
+input[type="hidden"] {
+	display: none;
+}
+header {
+	top: 0;
+}
+header, #formpost, .dialog {
+	position: fixed;
+	z-index: 10000;
+	left: 0;
+	right: 0;
+	opacity: 0.9;
+}
+header, #formpost, td.content {
+	background-color: white;
+}
+h1 {
+	font-size: 2rem;
+	font-weight: normal;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+header, #formpost {
+	padding-top: 0.5rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+.mcont, #dialog, input[type="text"] {
+	line-height: 1.25 !important;
+}
+input[type="text"] {
+	background-color: lightyellow;
+	outline-width: 2px;
+	outline-style: solid;
+	outline-color: khaki;
+	border: none;
+	margin: 2px;
+	-webkit-appearance: none;
+	appearance: none;
+}
+input[type="text"]:focus {
+	outline-color: darkkhaki;
+}
+button, header img, .msgname, input[type="submit"] {
+	background-color: crimson;
+	color: white;
+	border: none;
+}
+button, input[type="submit"] {
+	text-decoration: none;
+	float: right;
+	z-index: 2000;
+	font-size: inherit;
+}
+button, input, .msgname, .mcont, .dialog, time {
+	padding-left: 1rem;
+}
+button, input, .comment {
+	padding-bottom: 0.5rem;
+}
+button, input, .mcont, .dialog, time {
+	padding-right: 1rem;
+}
+.mcont, .msgname, .dialog {
+	padding-top: 1rem;
+}
+.mcont, .msgname, .dialog {
+	padding-bottom: 1rem;
+}
+button, input, .comment {
+	padding-top: 0.5rem;
+}
+td {
+	vertical-align: top;
+	padding: 0;
+	margin: 0;
+}
+.msgname {
+	background-image: url("top.png"), url("bottom.png"), url("arrow.png");
+	background-repeat: repeat-x, repeat-x, no-repeat;
+	background-position: top center, bottom center, right 9px;
+}
+h3, h1 {
+	margin: 0 !important;
+}
+h2 {
+	margin: 1rem 0 0.5rem 0;
+}
+#topper, button, input[type="submit"], time, html, body, table {
+	position: relative;
+}
+.dialog {
+	-webkit-box-sizing: border-box !important;
+	-ms-box-sizing: border-box !important;
+	-moz-box-sizing: border-box !important;
+	box-sizing: border-box !important;
+}
+time {
+	display: block;
+	z-index: 5000;
+	text-align: right;
+}
+time:not(:first-child) {
+	padding-top: 3rem;
+}
+time:first-child {
+	margin-top: 0.5rem;
+}
+#formpost {
+	bottom: 0;
+}
+table {
+	border-spacing: 0;
+	margin: 0;
+	width: 100%;
+}
+.msgname {
+	display: block;
+	padding-right: 2rem;
+}
+@media all and (max-width: 1280px) {
+	td.tag {
+		width: 20%;
+	}
+}
+@media all and (max-width: 960px) {
+	td.tag {
+		width: 25%;
+	}
+}
+@media all and (max-width: 768px) {
+	td.tag {
+		width: 30%;
+	}
+}

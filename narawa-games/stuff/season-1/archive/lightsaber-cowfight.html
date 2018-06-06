@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Lightsaber Cowfight</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			* {
+				background-size: 100% 100%;
+			}
+			body {
+				margin: 0px;
+				background-color: black;
+				font-family: sans-serif;
+			}
+			div {
+				display: inline-block;
+			}
+			#char {
+				background-image: url("obiwan.png");
+				left: 100px;
+			}
+			#vader {
+				background-image: url("dvader.png");
+				left: 800px;
+			}
+			#cow {
+				background-image: url("cow.png");
+				left: 500px;
+			}
+			.infobox {
+				position: absolute;
+				left: 25px;
+				top: 25px;
+				text-shadow: 0px 1px gray, 1px 0px gray, 0px -1px gray, -1px 0px gray, -1px -1px gray, 1px 1px gray, -1px 1px gray, 1px -1px gray;
+				line-height: 1.5;
+				color: white;
+				background-color: lightgray;
+				border-radius: 10px;
+				padding: 15px;
+				border: 3px solid gray;
+			}
+			#char, .opponent {
+				position: relative;
+				height: 100px;
+				width: 100px;
+				top: 500px;
+				transition: 0.125s;
+				border-radius: 100%;
+				border: 5px solid white;
+				box-shadow: inset 0px 0px 0px 3px gray, 0px 0px 0px 3px gray;
+			}
+			#lightsaber {
+				background-image: url("lsaber.png");
+			}
+			#lightsaberred {
+				background-image: url("lsaber2.png");
+			}
+			#lightsabergreen {
+				background-image: url("lsaberg.png");
+				left: -240px;
+				margin-left: 50px;
+				transform-origin: center center;
+				-webkit-transform-origin: center center;
+				width: 480px;
+			}
+			.lightsaber {
+				left: 100px;
+				transform-origin: -50px center;
+				-webkit-transform-origin: -50px center;
+				height: 25px;
+				width: 200px;
+				position: absolute;
+				transform: rotate(0deg);
+				-webkit-transform: rotate(0deg);
+				top: 50px;
+				margin-top: -12px;
+				z-index: -10;
+			}
+			@keyframes blitz {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes block {
+				25% {
+					transform: rotate(-90deg);
+					transform-origin: 0px center;
+					top: 100px;
+				}
+			}
+			@keyframes poke {
+				to {
+					transform: translate(100px);
+				}
+			}
+			@keyframes wham {
+				to {
+					transform: rotate(65deg) translateY(100px);
+				}
+			}
+			@-webkit-keyframes blitz {
+				to {
+					-webkit-transform: rotate(360deg);
+				}
+			}
+			@-webkit-keyframes block {
+				25% {
+					-webkit-transform: rotate(-90deg);
+					-webkit-transform-origin: 0px center;
+					top: 100px;
+				}
+			}
+			@-webkit-keyframes poke {
+				to {
+					-webkit-transform: translate(100px);
+				}
+			}
+			@-webkit-keyframes wham {
+				to {
+					-webkit-transform: rotate(65deg) translateY(100px);
+				}
+			}
+		</style>
+		<script type="text/javascript">
+			var s83="blitz 0.75s ease";
+			var s80="poke 0.25s ease alternate";
+			var s66="block 0.5s ease alternate";
+			var s87="wham 0.25s ease";
+			var actions=[s83, s80, s66, s87];
+			function jump(character) {
+				character.style.top="250px";
+				setTimeout(function () {character.style.top="500px"}, 500);
+				return;
+			}
+			function action(event) {
+				var key=event.keyCode;
+				var saber=document.getElementById("lightsaber");
+				var chara=document.getElementById("char");
+				if (key=="39") {
+					chara.style.left=chara.offsetLeft+100+"px";
+					chara.style.transform="rotateY(0deg)";
+					chara.style.webkitTransform="rotateY(0deg)";
+					return;
+				}
+				else if (key=="40") {
+					chara.style.height="50px";
+					chara.style.top="550px";
+					setTimeout(function () {chara.style.height="100px"; chara.style.top="500px"}, 250);
+					return;
+				}
+				else if (key=="37") {
+					chara.style.left=chara.offsetLeft-100+"px";
+					chara.style.transform="rotateY(180deg)";
+					chara.style.webkitTransform="rotateY(180deg)";
+					return;
+				}
+				else if (key=="38") {
+					jump(chara);
+					return;
+				}
+				saber.style.animation=eval("s"+key);
+				saber.style.webkitAnimation=eval("s"+key);
+				setTimeout(function () {saber.style.removeProperty("animation")}, 750)
+			}
+			function setup() {
+				var fightrange=0;
+				var vaders=document.getElementsByClassName("opponent");
+				var chara=document.getElementById("char");
+				setInterval(function () {
+				for (vader=0; vader<vaders.length; vader++) {
+					var saber2=vaders[vader].firstElementChild;
+					if (vader==0) {
+						var lefty=vaders[vader].offsetLeft-100;
+					}
+					else {
+						var lefty=vaders[vader].offsetLeft-200;
+					}
+					if (vader==0) {
+						fightrange=225;
+					}
+					else {
+						fightrange=325;
+					}
+					if (chara.offsetLeft>vaders[vader].offsetLeft-fightrange) {
+						vaders[vader].style.left=lefty+1+"px";
+						saber2.style.animation=actions[Math.floor(Math.random()*3)];
+						saber2.style.webkitAnimation=actions[Math.floor(Math.random()*3)];
+						if (Math.floor(Math.random()*5)==2) {
+							jump(vaders[vader]);
+						}
+						if (Math.floor(Math.random()*2)==1) {
+							vaders[vader].style.transform="rotateY(0deg)";
+							vaders[vader].style.webkitTransform="rotateY(0deg)";
+						}
+						else {
+							vaders[vader].style.transform="rotateY(180deg)";
+							vaders[vader].style.webkitTransform="rotateY(180deg)";
+						}
+					}
+					else {
+						vaders[vader].style.left=lefty-50+"px";
+					}
+				}
+				}, 250);
+			}
+		</script>
+	</head>
+	<body onkeydown="action(event)" onload="setup()">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+		<div class="infobox">
+			W Key - Wham
+			<br>
+			S Key - Blitz
+			<br>
+			B Key - Block for 1/4 second
+			<br>
+			P Key - Poke
+			<br>
+			UP Key - Jump
+			<br>
+			DOWN Key - Duck or dodge
+			<br>
+			LEFT and RIGHT Key - Walk left or right
+		</div>
+		<div id="char">
+			<div id="lightsaber" class="lightsaber"></div>
+		</div>
+		<div id="vader" class="opponent">
+			<div id="lightsaberred" class="lightsaber"></div>
+		</div>
+		<div id="cow" class="opponent">
+			<div id="lightsabergreen" class="lightsaber"></div>
+		</div>
+	</body>
+</html>

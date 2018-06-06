@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Wasp Attack!</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			html {
+				background-color: black;
+				font-family: sans-serif;
+				font-size: 25px;
+				line-height: 1.5;
+			}
+			body {
+				margin: 0px;
+			}
+			canvas {
+				display: block;
+			}
+			h2 {
+				margin: 0px;
+			}
+			#inputbox {
+				width: 100px;
+			}
+			#toolbar {
+				padding: 10px 20px;
+				background-color: white;
+				width: 960px;
+			}
+			#overlay {
+				position: absolute;
+				top: 200px;
+				left: 0px;
+				font-size: 40px;
+				text-align: center;
+				z-index: 1000;
+				width: 1000px;
+				line-height: 40px;
+			}
+			input, button {
+				padding: 20px 40px;
+				appearance: none;
+				border: none;
+				font-size: inherit;
+				display: inline-block;
+			}
+			button {
+				background-color: #0a5;
+			}
+			#desc {
+				margin-bottom: 40px;
+			}
+			button, #desc {
+				color: white;
+			}
+			input {
+				background-color: white;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript">
+			var lives=3;
+			var Xcoords=[];
+			var Ycoords=[];
+			var state=[];
+			var canvas;
+			var exploding=false;
+			var level=3;
+			var speed=5;
+			var loadedcounter=0;
+			function explode(event) {
+				window.aim=window.explosion;
+				exploding=true;
+				for (x=0; x<state.length; x++) {
+					if (window.cursorposX>=Xcoords[x]-60 && window.cursorposX<=Xcoords[x]+60) {
+						if (window.cursorposY>=Ycoords[x]-60 && window.cursorposY<=Ycoords[x]+60) {
+							state[x]="dead";
+						}
+					}
+				}
+				setTimeout(function () {
+					exploding=false;
+					window.imagepos=0;
+					window.aim=window.targshoot;
+				}, 250);
+			}
+			function move(event) {
+				window.cursorposX=event.clientX;
+				window.cursorposY=event.clientY;
+			}
+			function nextLevel() {
+				for (y=0; y<level; y++) {
+					Xcoords.push(500+(Math.floor(Math.random()*200)-100));
+					Ycoords.push(300+(Math.floor(Math.random()*200)-100));
+					state.push("alive");
+				}
+			}
+			function draw() {
+				var aliveyes=false;
+				canvas.clearRect(0, 0, 1000, 600);
+				canvas.drawImage(window.bg, (window.cursorposX-500)/20, (window.cursorposY-300)/20, 1000, 600);
+				for (x=0; x<state.length; x++) {
+					if ((Xcoords[x]<=-75 || Xcoords[x]>=1075 || Ycoords[x]<=-75 || Ycoords[x]>=675) && state[x]=="alive") {
+						lives=lives-1;
+						state[x]="dead";
+					}
+					if (Xcoords[x]!=window.cursorposX) {
+						Xcoords[x]=Xcoords[x]+((Xcoords[x]-window.cursorposX)/Math.abs(Xcoords[x]-window.cursorposX))*speed;
+					}
+					if (Ycoords[x]!=window.cursorposY) {
+						Ycoords[x]=Ycoords[x]+((Ycoords[x]-window.cursorposY)/Math.abs(Ycoords[x]-window.cursorposY))*speed;
+					}
+					if (state[x]=="alive") {
+						canvas.drawImage(window.virus, Xcoords[x]-75, Ycoords[x]-75, 150, 150);
+						aliveyes=true;
+					}
+				}
+				canvas.drawImage(window.aim, window.imagepos, 0, 300, 300, window.cursorposX-150, window.cursorposY-150, 300, 300);
+				if (exploding==true) {
+					window.imagepos=window.imagepos+300;
+				}
+				if (lives<=0) {
+					canvas.font="normal bolder 76px sans-serif";
+					canvas.strokeText("Game Over!!!", 500, 267);
+					canvas.fillText("Game Over!!!", 500, 267);
+					canvas.font="normal bolder 30px sans-serif";
+					canvas.strokeText("Three wasps in total escaped outside the screen!", 500, 350);
+					canvas.fillText("Three wasps in total escaped outside the screen!", 500, 350);
+					aliveyes=true;
+					clearInterval(window.runner);
+				}
+				if (aliveyes==false) {
+					canvas.font="normal bolder 76px sans-serif";
+					canvas.strokeText("Level "+(level-2)+" Complete!!!", 500, 267);
+					canvas.fillText("Level "+(level-2)+" Complete!!!", 500, 267);
+					canvas.font="normal bolder 30px sans-serif";
+					canvas.strokeText("You killed enough wasps to advance a level!", 500, 350);
+					canvas.fillText("You killed enough wasps to advance a level!", 500, 350);
+					clearInterval(window.runner);
+					level++;
+					nextLevel();
+					setTimeout(function () {window.runner=setInterval(draw, 50);}, 2000);
+				}
+			}
+			function deloverlay() {
+				$("#overlay").remove();
+				canvas.font="normal bolder 76px sans-serif";
+				canvas.fillText("Loading...", 500, 267);
+				window.checker=setInterval(function () {
+					if (loadedcounter>=5) {
+						clearInterval(window.checker);
+						window.runner=setInterval(draw, 50);
+					}
+				}, 100);
+			}
+			function loadcount() {
+				loadedcounter++;
+			}
+			$(document).ready(function () {
+				canvas=$("canvas")[0].getContext("2d");
+				window.aim=new Image();
+				window.aim.onload=loadcount;
+				window.aim.src="target.png";
+				window.targshoot=new Image();
+				window.targshoot.onload=loadcount;
+				window.targshoot.src="target.png";
+				window.explosion=new Image();
+				window.explosion.onload=loadcount;
+				window.explosion.src="explode.png";
+				window.bg=new Image();
+				window.bg.onload=loadcount;
+				window.bg.src="supervirl.jpg";
+				window.cursorposX=500;
+				window.cursorposY=300;
+				window.imagepos=0;
+				window.virus=new Image;
+				window.virus.onload=loadcount;
+				window.virus.src="virus.png";
+				canvas.textAlign="center";
+				canvas.fillStyle="white";
+				canvas.strokeStyle="black";
+				canvas.lineWidth=6;
+				canvas.lineJoin="miter";
+				canvas.miterLimit=2;
+				nextLevel();
+			});
+			$(window).on("mousemove", move);
+			$(window).on("click", explode);
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<audio loop autoplay>
+			<source src="AlienMusic.mp3">
+			<source src="AlienMusic.ogg">
+		</audio>
+		<canvas width="1000" height="600"></canvas>
+		<div id="overlay">
+			<div id="desc">Type in a number to set the difficulty of the game.
+			High numbers are harder and low numbers are easy.</div>
+			<input id="inputbox" type="text" value="4">
+			<button onclick="speed=parseInt($('#inputbox')[0].value); deloverlay();">Start Game</button>
+		</div>
+		<div id="toolbar">
+			<h2>How to Play</h2>
+			Click to shoot the wasps. If you shoot all the wasps you advance a level. If 3 wasps in total escape outside the screen, the game is over.
+		</div>
+	</body>
+</html>

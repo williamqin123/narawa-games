@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Narawa Games | Gamestar Mechanic</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="Welcome to Narawa Games, where you can play free online games. Narawa Games also has a section with extra bonus games from Gamestar Mechanic!">
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../library/index.css">
+		<script type="text/javascript" src="../library/header.js"></script>
+		<script type="text/javascript">
+			var gameCodes = {
+				"lives-easy-lose": "<div id='gsm_298102'><script type='text/javascript'>var _gsm = _gsm || []; _gsm.push(['_node_id', 'gsm_298102']); _gsm.push(['_game_id', '298102']); _gsm.push(['_dynamic_url', 'gamestarmechanic.com/xml/get/']); _gsm.push(['_base_url', 'gamestarmechanic.com']); _gsm.push(['_info_url', 'images.gamestarmechanic.com/embed_info_game_2344244.txt?AWSAccessKeyId=AKIAJPMGIXOIYXBVKVWQ&Expires=1764602997&Signature=F04gUHBXlpLKweVRlpcV%2BdAj8Pk%3D']);(function(){var embedUrl_http = 'http://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl_https = 'https://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl = ('https:' == document.location.protocol ? embedUrl_https : embedUrl_http); var gsm = document.createElement('script'); gsm.type = 'text/javascript'; gsm.src = embedUrl; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gsm, s);})();"+"<"+"/"+"scr"+"ipt"+">"+"</div>",
+				"french-fry-attack": "<div id='gsm_298169'><script type='text/javascript'>var _gsm = _gsm || []; _gsm.push(['_node_id', 'gsm_298169']); _gsm.push(['_game_id', '298169']); _gsm.push(['_dynamic_url', 'gamestarmechanic.com/xml/get/']); _gsm.push(['_base_url', 'gamestarmechanic.com']); _gsm.push(['_info_url', 'images.gamestarmechanic.com/embed_info_game_3401188.txt?AWSAccessKeyId=AKIAJPMGIXOIYXBVKVWQ&Expires=1764608326&Signature=pcpmCJFE0hNg7eHkq06Eb1dipI4%3D']);(function(){var embedUrl_http = 'http://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl_https = 'https://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl = ('https:' == document.location.protocol ? embedUrl_https : embedUrl_http); var gsm = document.createElement('script'); gsm.type = 'text/javascript'; gsm.src = embedUrl; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gsm, s);})();"+"<"+"/"+"scr"+"ipt"+">"+"</div>",
+				"prison-escape": "<div id='gsm_350801'><script type='text/javascript'>var _gsm = _gsm || []; _gsm.push(['_node_id', 'gsm_350801']); _gsm.push(['_game_id', '350801']); _gsm.push(['_dynamic_url', 'gamestarmechanic.com/xml/get/']); _gsm.push(['_base_url', 'gamestarmechanic.com']); _gsm.push(['_info_url', 'images.gamestarmechanic.com/embed_info_game_6303918.txt?AWSAccessKeyId=AKIAJPMGIXOIYXBVKVWQ&Expires=1782675470&Signature=wePh0ugFzRAdVZUHjt3I3HGsW84%3D']);(function(){var embedUrl_http = 'http://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl_https = 'https://gamestarmechanic.com/embed/embed_game_fast.js'; var embedUrl = ('https:' == document.location.protocol ? embedUrl_https : embedUrl_http); var gsm = document.createElement('script'); gsm.type = 'text/javascript'; gsm.src = embedUrl; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gsm, s);})();"+"<"+"/"+"scr"+"ipt"+">"+"</div>"
+				
+			};
+			/*function popUpDialog(identifier) {
+				var dialog=$("<div class='game-dialog'><div class='close-button-container'><img src='../library/pop-up-close-button.png' width='32' height='32'></div></div>");
+				$("body").append(dialog);
+				dialog.append(gameCodes[identifier]);
+				var windowObject=$(window);
+				var dimensions=[windowObject.width(), windowObject.height()];
+				var sizeCalculator=window.setInterval(function () {
+					dialog.css({"top": (dimensions[1]/2)+"px", "left": (dimensions[0]/2)+"px", "margin-top": (dialog.outerHeight()/-2)+"px", "margin-left": (dialog.outerWidth()/-2)+"px"});
+				}, 100);
+				dialog.on("click", function(event) {
+					window.clearInterval(sizeCalculator);
+				});
+				$(".close-button-container").on("click", function(event) {
+					$(".game-dialog").remove();
+				});
+			}*/
+			$(document).ready(function() {
+				$(".playable").on("click", function(event) {
+					var gameTrigger = $(event.currentTarget).attr("data-game-action");
+					dialog(gameCodes[gameTrigger]);
+				});
+			});
+		</script>
+		<script>
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function() {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+			ga('create', 'UA-46623054-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</head>
+	<body id="GSM_Games">
+		<div class="card margin">
+			<h2 class="card-title">
+			Gamestar Mechanic Games
+			</h2>
+			<p>
+				<a href="//gamestarmechanic.com">Gamestar Mechanic</a> is a game design website for kids. The games listed here were all made using <a href="//gamestarmechanic.com">Gamestar Mechanic.</a>
+			</p>
+		</div>
+		<section class="c2">
+			<div class="layout-row">
+				<div class="column-layout">
+					<div class="game playable" data-game-action="prison-escape">
+						<img src="gamestar-mechanic-thumbnails/prison-escape.png" width="481" height="265">
+						<div class="description">
+							<h3>
+								PRISON ESCAPE (NEW)
+							</h3>
+							<p>
+								Free inmates, kill guards, and escape jail!
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="column-layout">
+					<div class="game playable" data-game-action="french-fry-attack">
+						<img src="gamestar-mechanic-thumbnails/french-fry-attack.png" width="480" height="265">
+						<div class="description">
+							<h3>
+								Attack Of The French Fries
+							</h3>
+							<p>
+								French Fries are the best food ever, right! But not in this game. In this game, French Fries will kill you! Avoid them at all costs!
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="uncollapse-margins">&nbsp;</div>
+		<section>
+			<div class="layout-row">
+				<div class="column-layout">
+					<div class="game playable no-spacing" data-game-action="lives-easy-lose">
+						<img src="gamestar-mechanic-thumbnails/lives-easy-to-lose.png" width="315" height="265">
+						<div class="description">
+							<h3>
+								Lives Are Easy To Lose
+							</h3>
+							<p>
+								If you think that video games are easy, then you should definitely play this game to find out how hard gaming can actually become.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="column-layout">
+					
+				</div>
+				<div class="column-layout">
+					
+				</div>
+			</div>
+		</section>
+	</body>
+</html>

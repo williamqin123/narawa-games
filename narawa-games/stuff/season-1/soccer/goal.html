@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<title>Soccer Goal</title>
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			body, html {
+				background-image: url("sky.png"), url("grass.png"), url("goal.png");
+				width: 100%;
+				height: 100%;
+				background-size: auto 175px, auto 50px, 100% 100%;
+				background-repeat: repeat-x, repeat-x, no-repeat;
+				background-position: 0px 0px, 0px 200px, 0px 250px;
+				background-color: #0082c9;
+			}
+			#ballarea {
+				z-index: 1000;
+				position: relative;
+			}
+			#goalie {
+				z-index: 150;
+			}
+			#goal {
+				width: 600px;
+				height: 300px;
+				z-index: 100;
+			}
+			#goal, #goalie {
+				position: absolute;
+				top: 75px;
+				left: 50%;
+				margin-left: -300px;
+			}
+		</style>
+		<script type="text/javascript">
+			var dinos=["veloc.png", "arche.png", "pyradc.png", "trex.png"];
+			window.dinoleft=window.innerWidth/2-50;
+			function drawcoords(sprite, x, y, sx, sy) {
+				if (sy==undefined) {
+					sy=sx;
+				}
+				window.game.drawImage(sprite, x-sx/2, y-sy/2, sx, sy);
+			}
+			function update() {
+				window.game.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			}
+			function startdrag(event) {
+				window.ballsize=event.clientY/3;
+				update();
+				window.canvas.style.zIndex="1000";
+				window.dinoleft=window.dinoleft+(event.clientX-window.innerWidth/2)/50;
+				drawcoords(window.ball, event.clientX, event.clientY, window.ballsize);
+				drawcoords(window.dino, window.dinoleft, 275, 100);
+			}
+			function setup() {
+				window.canvas=document.getElementById("ballarea");
+				window.canvas.width=window.innerWidth;
+				window.canvas.height=window.innerHeight;
+				window.game=window.canvas.getContext("2d");
+				window.ball=new Image();
+				window.ball.src="ball.png";
+				window.goalie=document.getElementById("goalie");
+				window.keeper=window.goalie.getContext("2d");
+				window.dino=new Image();
+				window.dino.src=dinos[window.location.search.substring(3, 4)];
+				window.canvas.addEventListener("mousemove", startdrag);
+				window.canvas.addEventListener("mousedown", function (event) {
+					window.ballcoords1=[event.clientX, event.clientY];
+				});
+				canvas.addEventListener("mouseup", function (event) {
+					window.canvas.removeEventListener("mousemove", startdrag);
+					var x=event.clientX;
+					var y=event.clientY;
+					var net=document.getElementById("goal");
+					window.ballsize=200;
+					var count=100;
+					var falldown=25;
+					function redo() {
+						window.canvas.addEventListener("mousemove", startdrag);
+						clearInterval(window.kick);
+					}
+					window.kick=setInterval(function () {
+						x=x+(window.ballcoords1[0]-event.clientX)/8;
+						y=(y+(window.ballcoords1[1]-event.clientY)/5)+falldown;
+						window.ballsize=Math.abs(-y/(falldown/25));
+						update();
+						drawcoords(window.ball, x, y, window.ballsize/3);
+						drawcoords(window.dino, x, 275, 100);
+						count++;
+						falldown=falldown+(falldown/5)*(event.clientY-window.ballcoords1[1])/window.innerHeight;
+						if (window.ballsize>75 && window.ballsize<100) {
+							if (y>165 && y<335 && x>window.dinoleft-50 && x<window.dinoleft+50) {
+								alert("NO GOAL! The dinosoar blocked it!");
+							}
+						}
+						if (window.ballsize<75 && y>=100 && y<=350 && x>net.offsetLeft && x<net.offsetLeft+net.offsetWidth) {
+							alert("GOAL!!!");
+							redo();
+						}
+						if (falldown>=(event.clientY-window.ballcoords1[1])/4.5 || x<=0) {
+							redo();
+						}
+					}, 50);
+				});
+			}
+			window.addEventListener("load", setup);
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<canvas id="goalie" width="600" height="300"></canvas>
+		<img src="net.png" id="goal">
+		<canvas id="ballarea"></canvas>
+	</body>
+</html>

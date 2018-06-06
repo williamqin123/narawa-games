@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Car Race Ultra HD</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			html, body {
+				-webkit-perspective: 1000px;
+				perspective: 1000px;
+				margin: 0px;
+				overflow: hidden;
+				position: relative;
+				background-image: url("sky.png");
+				-webkit-perspective-origin: center top;
+				perspective-origin: center top;
+				font-family: sans-serif;
+				height: 100%;
+				width: 100%;
+			}
+			#track, #car, #sky, #dialog, h1 {
+				position: fixed;
+			}
+			#track {
+				width: 100%;
+				height: 1000px;
+				transform-origin: center top;
+				transform: rotateX(65deg);
+				-webkit-transform-origin: center top;
+				-webkit-transform: rotateX(65deg);
+				background-size: 80%;
+				z-index: 100;
+				background-position: center top;
+			}
+			#car {
+				width: 18.4%;
+				background-image: url("car.png");
+				top: 50%;
+				left: 50%;
+				margin-left: -9.2%;
+				background-size: 100% 100%;
+				z-index: 1000;
+			}
+			#dialog {
+				background-color: white;
+				top: 50%;
+				left: 50%;
+				margin: -200px -300px;
+				width: 600px;
+				height: 400px;
+				text-align: center;
+				z-index: 5000;
+				display: none;
+				box-shadow: 0px 0px 500px black;
+				border-radius: 10px;
+			}
+			#button {
+				width: 150px;
+				display: inline-block;
+				background-color: silver;
+			}
+			h2, #button {
+				padding: 10px;
+				background: linear-gradient(to bottom, #abc 0%, #cde 5%, #89a 50%, slategray 50%);
+				margin: 5px;
+				color: white;
+				border-radius: 5px;
+			}
+			#text {
+				font-size: 100px;
+			}
+			h1 {
+				text-shadow: 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white;
+				top: 50px;
+				right: 200px;
+				z-index: 20000;
+			}
+		</style>
+		<script type="text/javascript">
+			var deg=150;
+			var pos=0;
+			var turner=0;
+			var turnoffset=0;
+			var godeg=0;
+			var list=["url(", "url(desert.png)", "", "url(desert.png)", "url(road.png)", "url(ice.png)", "url(water.png)"];
+			var time=new Date().getTime();
+			function setup() {
+				window.car=document.getElementById("car");
+				window.car.style.height=window.car.offsetWidth*0.8648+"px";
+				window.track=document.getElementById("track");
+				var url="url(/"+window.location.search.substring(7);
+				var oldbg="url("+url.substring(url.lastIndexOf("/")+1);
+				window.track.style.backgroundImage=list[list.lastIndexOf(oldbg.replace(/%22/gi, "").replace(/"/gi, ""))+1];
+			}
+			function next() {
+				window.location="race.html?n="+window.track.style.backgroundImage;
+			}
+			function move(event) {
+				if (event.keyCode=="37" && (deg-150)>-50) {
+					deg=deg-5;
+				}
+				if (event.keyCode=="39" && (deg-150)<50) {
+					deg=deg+5;
+				}
+				turner=Math.abs(deg-150);
+				turnoffset=turnoffset+((turner-turnoffset)/10);
+			}
+			var cycle=setInterval(function () {
+				var h1=document.getElementsByTagName("H1")[0];
+				var dialog=document.getElementById("text");
+				var dialog2=document.getElementById("dialog");
+				pos=pos+(50-turnoffset);
+				turnoffset=turnoffset-(60-turner)/50;
+				godeg=godeg-(deg-150);
+				h1.innerHTML=(50-turnoffset).toFixed(0)+" MPH | "+(pos/10000).toFixed(2)+" Miles Driven";
+				window.track.style.backgroundPosition=godeg+"px "+pos+"px";
+				window.car.style.webkitTransform="rotateZ("+((deg-150)*1.8)+"deg)";
+				window.car.style.transform="rotateZ("+((deg-150)*1.8)+"deg)";
+				if (pos>=20000 && pos<=20500) {
+					pos=21000;
+					window.track.parentNode.removeChild(window.track);
+					window.car.style.display="none";
+					dialog2.style.display="block";
+					dialog.innerHTML="Time: "+((new Date().getTime())-time)/1000+" secs";
+					h1.style.display="none";
+					clearInterval(cycle);
+				}
+			}, 100);
+		</script>
+	</head>
+	<body onkeydown="move(event)" onload="setup()">
+		<div id="track">
+		</div>
+		<div id="car"></div>
+		<h1>0 MPH | 0.0 Miles Driven</h1>
+		<div id="dialog">
+			<h2>Track Complete!</h2>
+			<div id="text">Time: --.-- secs</div>
+			You can now advance to the next track!
+			<span id="button" onclick="next()">NEXT TRACK</span>
+		</div>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+	</body>
+</html>

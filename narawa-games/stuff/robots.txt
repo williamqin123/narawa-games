@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /chat-room/lockdown.html
+Crawl-delay: 10

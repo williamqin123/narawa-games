@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Narawa Games | Artificial Intelligence</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="description" content="The dawn of artificial intelligence is coming! Narawa Games, a free game website, would like to participate in this new technology. This web-app&apos;ll simulate a surprisingly dumb robot.">
+		<style type="text/css">
+			#userinputbox {
+				height: 4rem;
+				left: 0.5rem;
+				right: 0.5rem;
+				bottom: 0.5rem;
+				z-index: 2000;
+			}
+			#box, #button {
+				height: 2rem;
+				padding: 0.5rem;
+				bottom: 1rem;
+				z-index: 5000;
+			}
+			#box {
+				left: 1rem;
+				right: 5.5rem;
+			}
+			* {
+				overflow: hidden;
+			}
+			html {
+				font-size: 1em;
+			}
+			body {
+				font-size: 2rem;
+			}
+			html, body {
+				font-family: "Helvetica Neue", "Calibri", sans-serif;
+				height: 100%;
+				margin: 0;
+				line-height: 1;
+				color: #333;
+				background-color: lightgray;
+			}
+			div {
+				position: fixed;
+			}
+			p {
+				margin: 0;
+				padding: 1rem;
+			}
+			p:nth-child(1), #userinputbox {
+				background-color: white;
+			}
+			p:nth-child(1), #userinputbox {
+				box-shadow: inset 0 0 0 2px #aaa;
+			}
+			#responses {
+				left: 0.5rem;
+				right: 0.5rem;
+				top: 0.5rem;
+				z-index: 1000;
+			}
+			#button {
+				right: 1rem;
+				width: 3rem;
+				background-color: #c12;
+				box-shadow: inset 0 0 0 2px #911;
+			}
+			@media all and (max-width: 1025px) {
+				html body {
+					font-size: 1.6rem;
+				}
+			}
+			@media all and (max-width: 641px) {
+				html body #button {
+					width: 1.5rem;
+				}
+				html body {
+					font-size: 1.3rem;
+				}
+				html body #userinputbox {
+					height: 3.5rem;
+					left: 0.5rem;
+					right: 0.5rem;
+					bottom: 0.5rem;
+					z-index: 2000;
+				}
+				html body #box, #button {
+					height: 1.5rem;
+					padding: 0.5rem;
+					bottom: 1rem;
+					z-index: 5000;
+				}
+				html body #box {
+					left: 1rem;
+					right: 4rem;
+				}
+			}
+		</style>
+		<script type="text/javascript">
+			var old="";
+			function response() {
+				var typing=document.getElementById("box");
+				var sentence=typing.innerHTML.toLowerCase().replace(/ /gmi, "").replace(/&nbsp;/gmi, "").replace(/'/gmi, "&apos;").replace(/&#39;/gmi, "&apos;").replace(/&#x27;/gmi, "&apos;");
+				var respond="I&apos;m not sure I understand. Be sure to spell what you type correctly.";
+				if (sentence.indexOf("?")>=0) {
+					respond="I don&apos;t know about that.";
+					if (sentence.indexOf("whatis")>=0 || sentence.indexOf("what&apos;s")>=0 || sentence.indexOf("whats")>=0) {
+						respond="I haven&apos;t learned that yet.";
+					}
+					if (sentence.indexOf("doyou")>=0) {
+						respond="Nope. I Don&apos;t.";
+					}
+					if (sentence.indexOf("areyou")>=0) {
+						respond="Nope. Of course I&apos;m not.";
+					}
+					if (sentence.indexOf("areyou")>=0 && (sentence.indexOf("moron")>=0 || sentence.indexOf("stupid")>=0 || sentence.indexOf("idiot")>=0 || sentence.indexOf("retard")>=0 || sentence.indexOf("dumb")>=0 || sentence.indexOf("doofus")>=0)) {
+						respond="Yup. Of course I am!";
+					}
+					if (sentence.indexOf("whereis")>=0 || sentence.indexOf("where&apos;s")>=0 || sentence.indexOf("wheres")>=0) {
+						respond="I don&apos;t know. I&apos;m not good at finding where things are.";
+					}
+					if (sentence.indexOf("why")>=0) {
+						respond="I don&apos;t know. Maybe the real Siri might know.";
+					}
+				}
+				else if (sentence.indexOf("!")>=0) {
+					respond="Oh. But who cares?";
+					if (sentence.indexOf("man")>=0 && (sentence.indexOf("aw")>=0 || sentence.indexOf("oh")>=0)) {
+						respond="Don&apos;t complain about me being dumb. I don&apos;t know much at all.";
+					}
+					if (sentence.indexOf("no")>=0) {
+						respond="What, no? What makes you so angry of my dumbness?";
+					}
+					if (sentence.indexOf("hey")>=0 || sentence.indexOf("yeah")>=0) {
+						respond="So what?";
+					}
+				}
+				else {
+					if (sentence.indexOf("youare")>=0 || sentence.indexOf("you&apos;re")>=0 || sentence.indexOf("youre")>=0) {
+						respond="Oh, no, I&apos;m not.";
+					}
+					if (sentence.indexOf("hey")>=0 || sentence.indexOf("dude")>=0 || sentence.indexOf("hi")>=0 || sentence.indexOf("hello")>=0) {
+						respond="Anyway, did you know I&apos;m smart, but other people think I&apos;m dumb?";
+					}
+					if (sentence.indexOf("youknow")>=0 || sentence.indexOf("yaknow")>=0) {
+						respond="No, I dont know. Even if I knew, I am programmed to be dumb, so I can&apos;t tell you.";
+					}
+				}
+				if ((sentence.indexOf("youare")>=0  || sentence.indexOf("you&apos;re")>=0 || sentence.indexOf("youre")>=0) && ((sentence.indexOf("moron")>=0 || sentence.indexOf("stupid")>=0 || sentence.indexOf("idiot")>=0 || sentence.indexOf("retard")>=0 || sentence.indexOf("dumb")>=0 || sentence.indexOf("doofus")>=0))) {
+					respond="Oh, yes! Yes! Thanks!";
+				}
+				if (old==sentence) {
+					respond="You already said that.";
+				}
+				var newresponse=document.createElement("p");
+				newresponse.innerHTML=respond;
+				document.getElementById("responses").insertBefore(newresponse, document.getElementById("responses").children[0]);
+				old=sentence;
+			}
+		</script>
+	</head>
+	<body>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-46623054-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+		<div id="responses">
+			<p>I&apos;m a robot. Type something in the box at the bottom, then click the red button. I&apos;ll respond to you with my artificial intelligence.</p>
+		</div>
+		<div id="userinputbox">
+			<div id="box" contenteditable="true" onclick="event.target.innerHTML='';">Type a sentence here. . .</div>
+			<div id="button" onclick="response();"></div>
+		</div>
+	</body>
+</html>

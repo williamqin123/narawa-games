@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Whack-a-Cow</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body {
+				margin: -250px;
+				top: 50%;
+				left: 50%;
+				position: absolute;
+				font-size: 0px;
+				font-family: sans-serif;
+			}
+			div {
+				font-size: 30px;
+				text-align: right;
+				top: -10px;
+				position: relative;
+				padding-right: 50px;
+				text-shadow: 4px 4px deepskyblue;
+				font-weight: bold;
+			}
+			img {
+				position: fixed;
+				margin-left: -50px;
+				margin-top: -100px;
+			}
+			.cow {
+				display: inline-block;
+				width: 166px;
+				height: 166px;
+				background-image: url("cow.png");
+				border-radius: 50%;
+				box-shadow: inset 0px 0px 0px 3px white, inset 0px -15px darkorange;
+				transition: 0.25s;
+				background-position: center 166px;
+				background-size: 133px 133px;
+				background-repeat: no-repeat;
+				background-color: #fb4;
+			}
+			@keyframes boing {
+				0% {margin-top: -100px;}
+				50% {margin-top: 25px;}
+				100% {margin-top: -100px;}
+			}
+			@-webkit-keyframes boing {
+				0% {margin-top: -100px;}
+				50% {margin-top: 25px;}
+				100% {margin-top: -100px;}
+			}
+		</style>
+		<script type="text/javascript">
+			var count=0;
+			var misses=-9;
+			function movecursor(event) {
+				window.ball.style.top=event.clientY+"px";
+				window.ball.style.left=event.clientX+"px";
+			}
+			function whack(event) {
+				window.ball.style.animation="boing 0.25s linear";
+				window.ball.style.webkitAnimation="boing 0.25s linear";
+				setTimeout(function () {window.ball.style.animation="none"; window.ball.style.webkitAnimation="none"}, 250);
+				if (event.target.className=="cow") {
+					if (event.target.style.backgroundPosition!="50% 166px") {
+						count=count+1;
+					}
+					event.target.style.backgroundPosition="50% 166px";
+				}
+				window.ball.style.display="inline-block";
+			}
+			function setup() {
+				window.ball=document.getElementsByTagName("IMG")[0];
+				window.cows=document.getElementsByClassName("cow");
+				setInterval(function () {
+					for (x=0; x<window.cows.length; x++) {
+						if (window.cows[x].style.backgroundPosition!="50% 166px") {
+							misses=misses+1;
+						}
+						window.cows[x].style.backgroundPosition="50% 166px";
+						var points=document.getElementById("counter");
+						points.innerHTML="Hits: "+count+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Misses: "+misses;
+					}
+					for (i=0; i<window.cows.length; i++) {
+						if (Math.floor(Math.random()*9)==1) {
+							window.cows[i].style.backgroundPosition="50%";
+						}
+					}
+				}, 1000);
+				window.ball.addEventListener("mousedown", function () {window.ball.style.display="none"});
+				window.addEventListener("mouseup", whack);
+			}
+		</script>
+	</head>
+	<body onload="setup()" onmousemove="movecursor(event)">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<div id="counter">Hits: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Misses: 0</div>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<br>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<br>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<span class="cow"></span>
+		<img src="cursor1.png" height="100" width="100">
+	</body>
+</html>

@@ -1,0 +1,28 @@
+html {
+	background: linear-gradient(to bottom, orange, #d63);
+	box-shadow: inset 0px 0px 0px 2px orange;
+}
+html, body {
+	position: relative;
+	height: 100%;
+}
+body {
+	width: 1100px;
+	margin: 0px auto;
+}
+canvas {
+	box-shadow: 0px 0px 0px 2px #931, 0px 0px 0px 10px white, 0px 0px 0px 12px #931;
+	margin: 50px;
+}
+#maingame {
+	background-image: url("sand.jpg");
+}
+#deadturkey {
+	background-image: url("turkey.jpg");
+}
+#clicktostart {
+	background-image: url("start.jpg");
+}
+#skate canvas {
+	background-image: url("../roller-bladez/startImg.jpg");
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cash Factory ALPHA</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="cash-factory-script-3.js"></script>
+		<link href="//fonts.googleapis.com/css?family=Raleway:400,500" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="cash-factory-styles.css">
+	</head>
+	<body class="white-text">
+		<div>
+			<div class="extremely-huge-text replace-text">
+				<!-- The thing that says how much money you have -->
+				$<span id="money">500.00</span>
+			</div>
+		</div>
+		<div id="game-container">
+			<div id="workers" class="page">
+				<p>
+					Click on a business to make workers work there.
+				</p>
+				<p>
+					Workers working: <span id="workers-used">0</span> / <span id="total-workers">5</span>
+				</p>
+				<div class="clickable button tile" onclick="hireNewWorker()">
+					<div class="big-text">Get another worker</div>
+					<p>
+						Cost to hire another worker: $<span id="worker-hire-cost">1.00</span>
+					</p>
+				</div>
+				<div id="workers-page-list-html">
+					<div class="clickable tile dark-text" data-action="work('lemonade');" id="lemonade">
+						<div class="very-big-text on-top">Lemonade Stand</div>
+						<p>
+							Cost to hire worker to make lemonade: $<span class="work-cost">15.00</span>
+						</p>
+						<p>
+							Workers making lemonade: <span id="lemonade-workers">0</span>
+						</p>
+						<p>
+							Your lemonade price: $<input id="lemonade-price">
+						</p>
+						<p>
+							<progress value="0" max="100"></progress>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id="advertise" class="page">
+			</div>
+			<div id="upgrades" class="page">
+				<p id="upgrades-explanation-paragraph">
+					Upgrades make existing features in the game faster or give more rewards.
+				</p>
+				<div class="clickable tile dark-text" data-action="upgrade('revenues');">
+					<div class="very-big-text">More Profit</div>
+					<p>
+						Description: increases all revenue by 10%.
+					</p>
+					<p class="replace-text" data-code="'Cost To Upgrade: ' + dollar(upgrades['revenues']['cost'])">
+
+					</p>
+				</div>
+				<div class="clickable tile dark-text" data-action="upgrade('workers');">
+					<div class="very-big-text">Faster Workers</div>
+					<p>
+						Description: workers will work faster.
+					</p>
+					<p class="replace-text" data-code="'Cost To Upgrade: ' + dollar(upgrades['workers']['cost'])">
+
+					</p>
+				</div>
+			</div>
+			<div id="inventory" class="page">
+				<p id="inventory-explanation-paragraph">
+					Here is your inventory. These are the products that your workers made. Customers will come here to buy them. Advertising will make customers come more frequently.
+				</p>
+				<div id="inventory-list">
+				</div>
+			</div>
+			<div id="businesses" class="page">
+				<p>
+					Here are all the businesses that you have. Start a new one if you're ready to!
+				</p>
+				<div id="business-list">
+
+				</div>
+				<div class="clickable button tile" data-action="unlockNewBusiness()" id="new-business-button">
+					<div class="big-text">Start a new business!</div>
+					<p class="replace-text" data-code="'Cost to unlock the ' + globals.unlockedObject.businessName + ': ' + dollar(globals.unlockedObject.unlockCost)">
+
+					</p>
+				</div>
+			</div>
+			<div id="achievements" class="page">
+				<p id="achievements-explanation-paragraph">
+					Here are your achievements. If the list is empty, then you just have to wait until you get some more.
+				</p>
+				<div id="achievement-list">
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

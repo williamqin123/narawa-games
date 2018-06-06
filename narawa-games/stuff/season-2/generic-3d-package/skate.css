@@ -1,0 +1,13 @@
+@import url("//fonts.googleapis.com/css?family=Roboto:400,700") all;
+html, body {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	width: 1100px;
+	margin: 0px auto;
+}
+canvas {
+	box-shadow: 0px 0px 0px 2px black, 0px 0px 0px 10px white, 0px 0px 0px 12px black;
+	margin: 50px;
+}

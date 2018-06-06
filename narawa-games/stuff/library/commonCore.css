@@ -1,0 +1,100 @@
+i, em {
+	font-style: italic;
+}
+strong, b {
+	font-weight: bold;
+}
+a img {
+	border: none;
+}
+html body .game {
+	/**/overflow: hidden;/**/
+}
+html body .action {
+	background-color: #E83F6F;
+}
+img {
+	font-size: 0;
+}
+html body .popular {
+	background-color: #32936F;
+}
+html body .easy {
+	background-color: #2274A5;
+}
+html body .creative {
+	background-color: #FFBF00;
+}
+html body .purpley {
+	background-color: #953A92;
+}
+html body .game h3:hover {
+	box-shadow: 0 0 0 2px white;
+}
+* {
+	font-kerning: normal;
+	word-wrap: break-word;
+}
+*:not(strong):not(b):not(.tagline) {
+	font-weight: normal;
+}
+html body button {
+	white-space: nowrap !important;
+}
+kbd {
+	font-family: monospace;
+	display: inline;
+	padding: 0.2rem 0.6rem;
+	border-radius: 0.5rem;
+	box-shadow: inset 0 0 0 1px black;
+	color: white;
+	background-color: #333;
+	text-transform: uppercase;
+}
+kbd, .new {
+	text-shadow: 0 1px black, 0 -1px black, 1px 0 black, -1px 0 black, 1px -1px black, -1px 1px black, -1px -1px black, 1px 1px black;
+}
+@font-face {
+	src: url("SanFransisco3.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 300;
+}
+@font-face {
+	src: url("SanFransisco4.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 400;
+}
+@font-face {
+	src: url("SanFransisco6.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 600;
+}
+@font-face {
+	src: url("SanFransisco7.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 700;
+}
+@font-face {
+	src: url("SanFransisco3i.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 300;
+	font-style: italic;
+}
+@font-face {
+	src: url("SanFransisco4i.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 400;
+	font-style: italic;
+}
+@font-face {
+	src: url("SanFransisco6i.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 600;
+	font-style: italic;
+}
+@font-face {
+	src: url("SanFransisco7i.woff") format("woff");
+	font-family: "Narawa Games Sans";
+	font-weight: 700;
+	font-style: italic;
+}

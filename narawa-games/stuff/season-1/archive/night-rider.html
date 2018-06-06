@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Dump Rider 2</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body, html {
+				margin: 0px;
+				height: 100%;
+				width: 100%;
+				font-family: sans-serif;
+				color: white;
+				text-align: center;
+				background-size: auto 100%;
+			}
+			html {
+				background-image: url("bday.png");
+			}
+			* :not(style, script) {
+				display: block;
+			}
+			.line {
+				position: absolute;
+			}
+			#level {
+				position: fixed;
+				z-index: 1000;
+				padding: 15px;
+				background-color: orange;
+				border-radius: 0px 32px 32px 0px;
+			}
+			#container {
+				height: 100%;
+				position: relative;
+			}
+			.rider {
+				border-bottom: 5000px solid black;
+			}
+			.rider:first-child {
+				border-left: 5000px solid black;
+				margin-left: -5000px;
+			}
+			.rider:last-child {
+				border-right: 5000px solid black;
+				margin-right: -5000px;
+			}
+			#cart {
+				top: 475px;
+				left: 325px;
+				transition: 0.025s;
+				webkit-transition: 0.025s;
+				transform-origin: bottom center;
+				z-index: 100;
+			}
+			div.line {
+				width: 10px;
+				height: 10px;
+				border-radius: 5px;
+			}
+		</style>
+		<script type="text/javascript">
+			var oldtop=500;
+			var oldbottom=500;
+			var oldangle=0;
+			var oldwidth=400;
+			var list=[-60, -45, -30, 0, 30, 45, 60];
+			var num=0;
+			var indicator=false;
+			var time=null;
+			var count=0;
+			window.driver=null;
+			function spikes(left, top) {
+				var spikes=document.createElement("IMG");
+				spikes.setAttribute("class", "line");
+				spikes.setAttribute("src", "spikes.png");
+				spikes.style.left=(left-50)+"px";
+				spikes.style.top=top+"px";
+				var body=document.getElementById("container");
+				body.appendChild(spikes);
+				setInterval(function () {
+					var elecoords=spikes.getBoundingClientRect();
+					var cart=document.getElementById("cart");
+					if (elecoords.left<=400 && elecoords.left>=300) {
+						spikes.style.top=spikes.offsetTop+15+"px";
+						if (elecoords.top>460) {
+							window.content.innerHTML="<h1>THE SPIKES CRUSHED YOUR CAR!</h1> Be sure to run away from spikes fast enough. You'll need some practice driving the car cause it's hard to control.";
+						}
+					}
+				}, 100);
+			}
+			function slow(event) {
+				clearInterval(window.driver);
+				time=new Date().getTime();
+				indicator=true;
+			}
+			function move(event) {
+				window.driver=setInterval(function () {
+					var level=window.location.search.substring(3, window.location.search.indexOf("&"));
+					if (time==null || indicator==true) {
+						time=new Date().getTime();
+						indicator=false;
+					}
+					window.pause=new Date().getTime()-time;
+					if (window.pause<0) {
+						time=new Date().getTime();
+						window.pause=50;
+						indicator=true;
+					}
+					var points=document.getElementsByClassName("point");
+					if (num==74) {
+						window.content.innerHTML="<h1>YOU GOT TO THE END!</h1> Great job riding the bumpy road. You'll need some practice driving the car cause it's hard to control.";
+						clearInterval(window.driver);
+						setTimeout(function () {window.location="play.html?l="+(level-250)+"&s="+(window.spikesc-2)}, 2000);
+					}
+					var lines=document.getElementsByClassName("rider");
+					var cart=document.getElementById("cart");
+					var body=document.getElementById("container");
+					window.content=document.getElementsByTagName("BODY")[0];
+					cartcoords=cart.getBoundingClientRect();
+					pointcoords=points[num+1].getBoundingClientRect();
+					if (cartcoords.left+75>=pointcoords.left+2 && cartcoords.top<=pointcoords.bottom && window.pause<=level) {
+						num=num+1;
+						var src=lines[num].src.substring(lines[num].src.lastIndexOf("/")+1, lines[num].src.indexOf(".png"));
+						if (src>=0) {
+							body.style.top=(500-lines[num].offsetTop)+"px";
+						}
+						else {
+							body.style.top=(500-(lines[num].offsetTop+lines[num].clientHeight))+"px";
+						}
+					}
+					if (window.pause>level) {
+						setTimeout(function () {window.content.innerHTML="<h1>YOUR CAR DROVE OFF THE TRACK!</h1> Try not to go too fast or else you'll go off or crash. You'll need some practice driving the car cause it's hard to control."}, 1000);
+					}
+					cart.style.transform="rotate("+src+"deg)";
+					cart.style.webkitTransform="rotate("+src+"deg)";
+					body.style.left=body.offsetLeft-((points[num+1].offsetLeft-points[num].offsetLeft)/(4000/window.pause))+"px";
+					body.style.top=body.offsetTop-((points[num+1].offsetTop-points[num].offsetTop)/(4000/window.pause))+"px";
+				}, 100);
+			}
+			function setup() {
+				var body=document.getElementById("container");
+				var line=document.createElement("IMG");
+				var random=list[Math.floor(Math.random()*7)];
+				window.spikesc=window.location.search.substring(window.location.search.indexOf("&")+3, window.location.search.length);
+				line.setAttribute("src", random+".png");
+				line.setAttribute("class", "line rider");
+				if (count<75) {
+					setTimeout(function () {
+						body.appendChild(line);
+						if (random>=0 && oldangle>=0) {
+							line.style.top=oldbottom+"px";
+							var top=oldbottom;
+						}
+						if (random<0 && oldangle>=0) {
+							line.style.top=(oldbottom-line.clientHeight)+"px";
+							var top=oldbottom;
+						}
+						if (random>=0 && oldangle<0) {
+							line.style.top=oldtop+"px";
+							var top=oldtop;
+						}
+						if (random<0 && oldangle<0) {
+							line.style.top=(oldtop-line.clientHeight)+"px";
+							var top=oldtop;
+						}
+						if (Math.floor(Math.random()*parseInt(window.spikesc))==1) {
+							oldtop=oldtop-225;
+							spikes(oldwidth, oldtop);
+						}
+						var point=document.createElement("DIV");
+						point.setAttribute("class", "line point");
+						point.style.top=top-5+"px";
+						point.style.left=oldwidth-5+"px";
+						body.appendChild(point);
+						line.style.left=oldwidth+"px";
+						oldwidth=oldwidth+line.clientWidth;
+						oldangle=random;
+						oldtop=line.offsetTop;
+						oldbottom=line.offsetTop+line.clientHeight;
+						count=count+1;
+						setup();
+					}, 150);
+				}
+				var leveler=document.getElementById("level");
+				leveler.innerHTML="LEVEL "+(parseInt((parseInt(20)-parseInt(window.spikesc))/2)+parseInt(1)).toString();
+			}
+			window.addEventListener("load", setup);
+			window.addEventListener("mousedown", move);
+			window.addEventListener("mouseup", slow);
+			window.addEventListener("touchstart", move);
+			window.addEventListener("touchleave", slow);
+		</script>
+	</head>
+	<body>
+		<h1 id="level"></h1>
+		<audio src="Zoro.mp3" autoplay loop></audio>
+		<div id="container"></div>
+		<img src="cart.png" id="cart" width="150" height="50" class="line">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+	</body>
+</html>

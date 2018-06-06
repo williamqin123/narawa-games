@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+	<head>
+		<title>FitnessGram PACER Test</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body, html {
+				background-color: black;
+				background-size: 600px;
+				font-size: 1.25em;
+				font-family: sans-serif;
+				text-shadow: 0px 3px orange;
+			}
+			html {
+				position: relative;
+				overflow: hidden;
+				height: 100%;
+				width: 100%;
+			}
+			body {
+				background-image: url("floor.jpg");
+				position: absolute;
+				top: 50%;
+				margin: -400px -364px;
+				width: 768px;
+				height: 800px;
+				left: 50%;
+				box-shadow: inset 0px 0px 0px 10px gray;
+			}
+			.runner {
+				width: 150px;
+				height: 200px;
+				margin-left: -75px;
+				background-size: 100% 100%;
+				top: 35px;
+			}
+			#you {
+				background-image: url("sulley.png");
+				position: absolute;
+				left: 50%;
+			}
+			.stats {
+				position: absolute;
+				right: 0px;
+				padding: 20px;
+				top: 0px;
+				text-align: right;
+			}
+			.meter {
+				width: 154px;
+				border: 1px solid gray;
+				box-shadow: inset 0px 3px 5px #333;
+				overflow: hidden;
+				background-color: gray;
+				height: 24px;
+				text-align: left;
+			}
+			.progress {
+				background: repeating-linear-gradient(-45deg, transparent 0px, transparent 10px, orange 10px, orange 20px),
+				linear-gradient(orange, #a80);
+				box-shadow: 0px 3px 5px #333;
+				height: 20px;
+				margin: 2px;
+				width: 150px;
+			}
+			.meterelement {
+				border-radius: 10px;
+				display: inline-block;
+			}
+		</style>
+		<script type="text/javascript">
+			var energy=850000;
+			var stage=0;
+			var usedtime=new Date().getTime();
+			var cycle=0;
+			var count=1;
+			var levels=[-1, 0, 7, 15, 23, 32, 41, 51, 61, 72, 83, 94, 106, 118, 131, 144, 157];
+			var scoretime=usedtime;
+			var scorenum=0;
+			function run(event) {
+				var you=document.getElementById("you");
+				var meter=document.getElementById("meter");
+				var meter2=document.getElementById("meter2");
+				var body=document.getElementsByTagName("BODY")[0];
+				var supposedto=levels[count]+((new Date().getTime()-scoretime)/60000)*(60/(levels[count]-levels[count-1]));
+				timeinterval=(usedtime-new Date().getTime())/0.95;
+				if (you.offsetTop+200>=770) {
+					you.style.backgroundImage="url('sulley2.png')";
+					scorenum=scorenum+1;
+					cycle=1;
+				}
+				if (you.offsetTop-body.offsetTop<=30) {
+					you.style.backgroundImage="url('sulley.png')";
+					scorenum=scorenum+1;
+					cycle=0;
+				}
+				if (cycle==0) {
+					you.style.top=you.offsetTop+30+"px";
+				}
+				else {
+					you.style.top=you.offsetTop-30+"px";
+				}
+				if (energy<=0) {
+					alert("You're too tired to run anymore! Your score is "+scorenum+" laps. You were supposed to run "+supposedto.toFixed(0)+" laps.");
+				}
+				if (stage==0) {
+					you.style.transform="rotateY(180deg)";
+					you.style.webkitTransform="rotateY(180deg)";
+					stage=1;
+				}
+				else {
+					you.style.transform="rotateY(0deg)";
+					you.style.webkitTransform="rotateY(0deg)";
+					stage=0;
+				}
+				if (timeinterval+1250>0) {
+					energy=energy-(timeinterval+1250);
+				}
+				var val1=(energy/850000)*150;
+				var val2=((new Date().getTime()-usedtime)/500)*150;
+				meter.style.width=val1+"px";
+				meter2.style.width=val2+"px";
+				if (val2>150) {
+					meter2.style.width="150px";
+				}
+				usedtime=new Date().getTime();
+			}
+			window.addEventListener("mousedown", run);
+			window.addEventListener("touchstart", run);
+			window.addEventListener("keydown", run);
+			setTimeout(function () {
+				setInterval(function () {
+					count=count+1;
+					scoretime=new Date().getTime();
+				}, 60000);
+			}, 40000);
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+		<audio src="fitnessgram.mp3" autoplay></audio>
+		<div class="stats">
+			<strong>ENERGY</strong>
+			<span class="meter meterelement">
+				<span id="meter" class="meterelement progress"></span>
+			</span>
+			<br>
+			<strong>DELAY</strong>
+			<span class="meter meterelement">
+				<span id="meter2" class="meterelement progress"></span>
+			</span>
+		</div>
+		<div id="you" class="runner"></div>
+	</body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Rock, Paper, Scissors!</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body {
+				margin: 50px auto;
+				width: 600px;
+				font-family: "Open Sans", "Helvetica Neue", sans-serif;
+				padding: 0 50px;
+			}
+			canvas {
+				background-image: url("sportstart.jpg");
+				background-size: 100% 100%;
+				border: 2px solid #26d;
+				margin: 0;
+			}
+			button:nth-child(1) {
+				border-radius: 10px 0 0 10px;
+			}
+			button:nth-child(3) {
+				border-radius: 0 10px 10px 0;
+			}
+			button {
+				font-size: 2rem;
+				background: linear-gradient(to bottom, #6bf, #59e);
+				color: white;
+				text-shadow: -2px 0 #26d, 2px 0 #26d, 0 2px #26d, 0 -2px #26d, -2px -2px #26d, 2px -2px #26d, -2px 2px #26d, 2px 2px #26d;
+				margin: 0 0 0 -2px;
+				border-style: solid;
+				border-width: 2px;
+				border-color: #26d;
+				padding: 10px 20px;
+			}
+			#containerdiv {
+				text-align: center;
+				font-size: 0;
+				margin: 1rem 0;
+			}
+		</style>
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script type="text/javascript">
+			var opposites;
+			var blend=0;
+			var opponent;
+			var player;
+			var offset=0;
+			var direction="down";
+			var blenddirection="neutral";
+			var cancel=false;
+			var movement=true;
+			var loadcounter=0;
+
+			function start() {
+				$("canvas").off("click", start);
+				$("button").on("click", activate);
+				$("canvas")[0].style.backgroundImage="url(sport.jpg)";
+				window.canvas.fillStyle="#26d";
+				window.canvas.fillRect(0, 263, 600, 74);
+				window.canvas.fillStyle="#59e";
+				window.canvas.fillRect(0, 265, 600, 70);
+				window.canvas.strokeText("Loading...", 300, 325, 500);
+				window.canvas.fillStyle="white";
+				window.canvas.fillText("Loading...", 300, 325, 500);
+
+				var loadingchecker=setInterval(function () {
+					if (loadcounter>=11) {
+						clearInterval(loadingchecker);
+						window.gameloop=setInterval(draw, 50);
+					}
+				}, 500);
+			}
+			function activate(event) {
+				cancel=true;
+				setTimeout(function () {
+					eval("player=window."+event.target.id+";");
+					opponent=opposites[event.target.id];
+				}, 250);
+				$("canvas").on("click", function () {window.location.reload(false);});
+				blenddirection="up";
+				$("button").off("click", activate);
+				setTimeout(function () {
+					window.canvas.fillStyle="#26d";
+					window.canvas.fillRect(0, 528, 600, 72);
+					window.canvas.fillStyle="#59e";
+					window.canvas.fillRect(0, 530, 600, 70);
+					window.canvas.strokeText("Click Here to Replay!", 300, 590, 500);
+					window.canvas.fillStyle="white";
+					window.canvas.fillText("Click Here to Replay!", 300, 590, 500);
+					clearInterval(window.gameloop);
+				}, 1000);
+			}
+			function draw() {
+				window.canvas.clearRect(0, 0, 1200, 700);
+				if (blenddirection=="down") {
+					blend=blend-0.1;
+				}
+				if (blenddirection=="up") {
+					blend=blend+0.2;
+				}
+				if (blend>=1) {
+					blenddirection="down";
+				}
+				if (blend<=0) {
+					blenddirection="neutral";
+					blend=0;
+				}
+				window.canvas.drawImage(opponent, 200, -50+offset, 200, 300);
+				window.canvas.globalAlpha=blend;
+				window.canvas.drawImage(boom, 150, -75+offset, 300, 350);
+				window.canvas.globalAlpha=1.0;
+
+				window.canvas.drawImage(player, 150, 250+offset, 300, 400);
+				window.canvas.globalAlpha=blend;
+				window.canvas.drawImage(boom, 125, 175+offset, 350, 450);
+				window.canvas.globalAlpha=1.0;
+				if (offset<=0) {
+					direction="down";
+					offset=0;
+					if (cancel==true) {
+						movement=false;
+					}
+				}
+				if (offset>=50) {
+					direction="up";
+					offset=50;
+				}
+				if (direction=="down" && movement==true) {
+					offset=offset+10;
+				}
+				if (direction=="up" && movement==true) {
+					offset=offset-10;
+				}
+			}
+			function loader() {
+				loadcounter++;
+			}
+			$(document).ready(function () {
+				window.canvas=$("canvas")[0].getContext("2d");
+
+				var bg1=new Image();
+				bg1.onload=loader;
+				bg1.src="sport.jpg";
+
+				var bg2=new Image();
+				bg2.onload=loader;
+				bg2.src="sportstart.jpg";
+
+				window.starter=new Image();
+				window.starter.onload=loader;
+				window.starter.src="starting.png";
+
+				window.starter2=new Image();
+				window.starter2.onload=loader;
+				window.starter2.src="starting2.png";
+
+				window.rock=new Image();
+				window.rock.onload=loader;
+				window.rock.src="rock.png";
+
+				window.paper=new Image();
+				window.paper.onload=loader;
+				window.paper.src="paper.png";
+
+				window.scissors=new Image();
+				window.scissors.onload=loader;
+				window.scissors.src="scissors.png";
+
+				window.rock2=new Image();
+				window.rock2.onload=loader;
+				window.rock2.src="rock2.png";
+
+				window.paper2=new Image();
+				window.paper2.onload=loader;
+				window.paper2.src="paper2.png";
+
+				window.scissors2=new Image();
+				window.scissors2.onload=loader;
+				window.scissors2.src="scissors2.png";
+
+				window.boom=new Image();
+				window.boom.onload=loader;
+				window.boom.src="boom.png";
+
+				player=window.starter2;
+				opponent=window.starter;
+
+				window.canvas.strokeStyle="#26d";
+				window.canvas.lineWidth=6;
+				window.canvas.lineJoin="bevel";
+
+				window.canvas.textAlign="center";
+				window.canvas.textBaseline="bottom";
+				window.canvas.font="50px sans-serif";
+
+				$("canvas").on("click", start);
+				opposites={"rock2":window.paper, "paper2":window.scissors, "scissors2":window.rock};
+			});
+		</script>
+	</head>
+	<body>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-46623054-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
+		<canvas width="600" height="600"></canvas>
+		<div id="containerdiv">
+			<button id="rock2">Rock</button>
+			<button id="paper2">Paper</button>
+			<button id="scissors2">Scissors</button>
+		</div>
+		<strong>Rock, Paper, Scissors! is an old game originated in China.</strong>
+		<p>
+			If you don't know already, there are 3 hand symbols: a rock, represented as a fist; a sheet of paper, represented by an open hand; and a pair of scissors, represented by 2 fingers separated as if to cut something.
+		</p>
+		<p>
+			You will play RPS against the computer. Click the screen to start the game. You will see your fist, and the computer's fist. Click on a blue button to change the fist into a hand symbol.
+		</p>
+		<p>
+			You win or lose depending on the hand symbol combination.
+			If the computer has rock, and you have paper, you win!
+			If the computer has paper, and you have scissors, you win!
+			If the computer has scissors, and you have rock, you win!
+			If the computer has rock, and you have scissors, you lose!
+			If the computer has paper, and you have rock, you lose!
+			If the computer has scissors, and you have paper, you lose!
+			If you and the computer both have the same hand symbol, it's a tie!
+		</p>
+	</body>
+</html>

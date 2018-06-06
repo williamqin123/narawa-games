@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<title>Soda Bottle Explosion</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body, html {
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				overflow: hidden;
+				font-family: sans-serif;
+			}
+			#bottles img, .bottle {
+				width: 50px;
+				height: 100px;
+			}
+			#bottles img, #bottles, .button {
+				padding: 10px;
+			}
+			#bottles {
+				background-color: white;
+			}
+			#bottles, .bottle {
+				position: fixed;
+			}
+			.button {
+				float: right;
+				background-color: deepskyblue;
+				color: white;
+			}
+			span {
+				display: inline-block;
+			}
+		</style>
+		<script type="text/javascript">
+			var selected="powerade.png";
+			var scaler=1;
+			function blow() {
+				var imgs=document.getElementsByClassName("bottle");
+				var body=document.getElementsByTagName("BODY")[0];
+				body.style.backgroundImage="url('smoke.jpg')";
+				var explosion=setInterval(function () {
+					for (x=0; x<imgs.length; x++) {
+						imgs[x].style.top=((imgs[x].offsetTop-(window.innerHeight/2))*1.1+window.innerHeight/2)+"px";
+						imgs[x].style.left=((imgs[x].offsetLeft-(window.innerWidth/2))*1.1+window.innerWidth/2)+"px";
+						scaler=scaler+0.01;
+						imgs[x].style.transform="scale("+scaler+")";
+						imgs[x].style.webkitTransform="scale("+scaler+")";
+						if (Math.floor(Math.random()*25)==2) {
+							imgs[x].src="cloud.png";
+							imgs[x].style.width="300px";
+							imgs[x].style.height="300px";
+						}
+					}
+					if (scaler>=25) {
+						clearInterval(explosion);
+					}
+				}, 50);
+			}
+			function put(event) {
+				if (event.target.parentNode.id!="bottles") {
+					var bottle=document.createElement("IMG");
+					var body=document.getElementsByTagName("BODY")[0];
+					bottle.setAttribute("class", "bottle");
+					bottle.style.top=(event.clientY-50)+"px";
+					bottle.style.left=(event.clientX-25)+"px";
+					bottle.src=selected;
+					body.appendChild(bottle);
+				}
+			}
+			function addbottle(event) {
+				selected=event.target.src;
+			}
+			function setup() {
+				var toolbox=document.getElementById("bottles");
+				var bottles=toolbox.children;
+				for (i=0; i<bottles.length; i++) {
+					bottles[i].addEventListener("click", addbottle);
+				}
+			}
+		</script>
+	</head>
+	<body onload="setup()" onclick="put(event)">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<span id="bottles">
+			<span class="button" onclick="blow()">Explode</span>
+			<img src="powerade.png">
+			<img src="sprite.png">
+			<img src="coke.png">
+			<img src="srush.png">
+		</span>
+	</body>
+</html>

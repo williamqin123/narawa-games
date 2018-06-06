@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Kill the Cow 5: Rocket Jet</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			#container, body {
+				width: 100%;
+				height: 100%;
+			}
+			#container {
+				position: fixed;
+				bottom: 0px;
+				z-index: 500;
+			}
+			body > h1 {
+				color: white;
+				text-align: center;
+				background-color: rgba(130, 130, 130, 0.5);
+				margin-bottom: 2px;
+				margin-top: 0px;
+				border: 1px solid gray;
+				padding: 10px;
+				text-shadow: 0px 0px 5px;
+			}
+			h1:first-child {
+				margin-top: 300px !important;
+			}
+			h1:last-child {
+				background-color: rgba(160, 255, 130, 0.5) !important;
+			}
+			hr {
+				margin: 10px;
+				height: 0px;
+				border: none;
+			}
+			body {
+				background-image: url("space.png");
+				margin: 0px;
+				font-family: "Impact", sans-serif;
+				position: relative;
+				overflow: hidden;
+			}
+			.sprite {
+				position: absolute;
+				z-index: 1000;
+				transition: 0.5s;
+			}
+			.sprite, #rocket {
+				width: 7.5%;
+				height: auto;
+			}
+			#rocket {
+				top: 50%;
+				z-index: 1;
+			}
+			#rocket, #lazer {
+				position: fixed;
+				opacity: 0.99;
+			}
+			.panel {
+				background-color: white;
+				width: 100%;
+				bottom: 0px;
+				position: fixed;
+				padding: 10px 50px;
+				z-index: 2000;
+			}
+			#score {
+				padding: 10px 75px;
+				font-size: 30px;
+				background-image: url("cow.png");
+				background-size: 60px 60px;
+				background-repeat: no-repeat;
+				margin: 0px;
+			}
+			#lazer {
+				width: 2px;
+				height: 0px;
+				bottom: 49.5%;
+				background-color: red;
+				margin-left: 3.6%;
+				border-radius: 2px;
+				transition: 0.15s linear;
+				box-shadow: 0px 0px 4px 3px red;
+			}
+			@media all and (max-device-width: 641px) {
+				.sprite, #rocket {
+					width: 18.5% !important;
+				}
+			}
+		</style>
+		<script type="text/javascript">
+			var things=["cow", "bomb"];
+			var count=0;
+			var num=0;
+			function smooth(code, limit) {
+				var counter=0;
+				var container=document.getElementById("container");
+				var smoother=setInterval(function () {
+					eval(code);
+					if (counter>=limit) {
+						clearInterval(smoother);
+					}
+					counter++;
+				}, 20);
+			}
+			function move(keycode) {
+				window.key=0;
+				if (keycode=="37") {
+					window.key=-20;
+				}
+				if (keycode=="39") {
+					window.key=20;
+				}
+				if (keycode=="32") {
+					window.beam.style.height="250px";
+				}
+				smooth("window.rocket.style.left=window.rocket.offsetLeft+window.key+'px';", 1);
+				window.rocket.style.transform="rotate("+window.key+"deg)";
+				window.rocket.style.webkitTransform="rotate("+window.key+"deg)";
+				setTimeout(function () {window.beam.style.height="0px"}, 100);
+			}
+			function obstacle() {
+				var thing=document.createElement("IMG");
+				var container=document.getElementById("container");
+				var obst=things[Math.floor(Math.random()*2)];
+				thing.className="sprite "+obst;
+				thing.src=obst+".png";
+				thing.style.left=Math.floor(Math.random()*92.5)+"%";
+				thing.style.bottom=count+"px";
+				container.appendChild(thing);
+				count=count+(thing.offsetWidth+10);
+			}
+			function detect() {
+				var body=document.getElementsByTagName("BODY")[0];
+				var controls=document.getElementById("score");
+				var cows=controls.innerHTML.substring(12);
+				window.beam.style.left=window.rocket.style.left;
+				var touch=document.elementFromPoint(beam.offsetLeft+2, beam.getBoundingClientRect().top-1);
+				if (touch.className=="sprite bomb") {
+					body.innerHTML="<h1>Cows Killed: %s</h1><h1>Distance: %d</h1><hr><h1>Total Score: %f</h1>".replace("%s", cows).replace("%d", Math.abs(num)).replace("%f", parseInt(cows)*Math.abs(num));
+					alert("Game Over!");
+					clearInterval(window.detector)
+				}
+				if (touch.className=="sprite cow" && touch.title!="x") {
+					touch.style.transform="scale(3)";
+					touch.style.webkitTransform="scale(3)";
+					touch.style.opacity="0.25";
+					touch.title="x";
+					setTimeout(function () {touch.parentNode.removeChild(touch)}, 500);
+					controls.innerHTML="Cows Killed: "+(parseInt(cows)+1).toString();
+				}
+				smooth("num=num-12; container.style.bottom=num+'px';", 1);
+				obstacle();
+				body.style.backgroundPosition="0px "+Math.abs(num)/1.75+"px";
+			}
+			function setup() {
+				window.beam=document.getElementById("lazer");
+				window.rocket=document.getElementById("rocket");
+				for (x=0; x<20; x++) {
+					obstacle();
+				}
+				window.detector=setInterval(detect, 100);
+			}
+			window.addEventListener("keydown", function (event) {move(event.keyCode)});
+			window.addEventListener("keyup", function (event) {window.rocket.style.transform="none"; window.rocket.style.webkitTransform="none"});
+			window.addEventListener("load", setup);
+			if (window.innerWidth>640) {
+				var ev=["mousedown", "mouseup"];
+			}
+			else {
+				var ev=["touchstart", "touchleave"];
+			}
+			window.addEventListener(ev[1], function () {clearInterval(window.mover)});
+			window.addEventListener(ev[0], function (event) {
+				window.X=event.clientX;
+				window.mover=setInterval(function () {
+					if (window.X<window.innerWidth/2) {
+						move("37");
+					}
+					if (window.X>window.innerWidth/2) {
+						move("39");
+					}
+				}, 90);
+			});
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<img src="rocket.png" id="rocket">
+		<div id="container"></div>
+		<div id="lazer"></div>
+		<div class="panel">
+			<div></div>
+			<h1 id="score">Cows Killed: 0</h1>
+			<div></div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto) all;
+html, body {
+	font-family: sans-serif;
+	color: #333;
+	margin: 0;
+	line-height: 1.25;
+	font-size: 1.5rem;
+	background-color: white;
+	overflow: hidden;
+}
+html, body, main {
+	position: relative;
+	height: 100%;
+	box-sizing: border-box;
+}
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 1rem;
+	background-color: white;
+	z-index: 1000;
+}
+.green {
+	background-color: seagreen;
+}
+main {
+	margin: 0 auto;
+	padding: 5.25rem 0;
+	overflow: scroll;
+}
+html {
+	font-size: 16px;
+}
+.full-size {
+	width: 960px;
+}
+.reader {
+	margin: 1rem 0;
+}
+.gray {
+	background-color: lightgray;
+	border: 1px solid silver;
+}
+.small-text {
+	font-size: 1rem;
+}
+h1 {
+	font-size: 4rem;
+	margin: 0;
+}
+.description {
+	margin: 2rem 0;
+}
+.breaker {
+	font-size: 0;
+	height: 1rem;
+}
+.lite {
+	color: white;
+}
+div.button {
+	display: block;
+}
+.button {
+	display: inline-block;
+	padding: 1rem 2rem;
+	border-radius: 0.5rem;
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Explore Biomes X</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			html, body {
+				margin: 0px auto;
+				width: 1200px;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript">
+			var keypressed=null;
+			var plusser=500;
+			var rotation=0;
+			function draw() {
+				window.canvas.save();
+				window.canvas.translate(500, plusser);
+				window.canvas.rotate(rotation*Math.PI/180);
+				if (keypressed=="37") {
+					rotation=rotation+1;
+				}
+				if (keypressed=="38") {
+					plusser=plusser+10;
+				}
+				if (keypressed=="39") {
+					rotation=rotation-1;
+				}
+				window.canvas.drawImage(window.mars, -500, plusser-1000, 1200, 1200);
+				window.canvas.restore();
+			}
+			$(document).ready(function () {
+				window.mars=new Image();
+				window.mars.src="mars.jpg";
+				window.canvas=$("canvas")[0].getContext("2d");
+				setInterval(draw, 100);
+			});
+			$(window).on("keydown", function (event) {keypressed=event.keyCode;});
+			$(window).on("keyup", function (event) {keypressed=null;});
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'narawagames.appspot.com');ga('send', 'pageview');</script>
+		<canvas width="1200" height="700"></canvas>
+	</body>
+</html>

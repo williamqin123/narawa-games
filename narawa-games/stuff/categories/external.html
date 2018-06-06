@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+  <head>
+      <title>Narawa Games | External Games</title>
+      <meta charset="UTF-8">
+      <meta name="description" content="Welcome to Narawa Games, a free game website. You can also play games copied from external websites right here, on Narawa Games!">
+      <script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="../library/index.css">
+      <script type="text/javascript" src="../library/header.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $("#flash-game").on("click", function (event) {
+            $(event.target).html("<iframe scrolling=\"no\" src=\"//play.centerforgamescience.org/treefrog/brainpop/index.html\" width=\"977px\" height=\"600\" id=\"flplaygame\"></iframe>");
+          });
+        });
+      </script>
+      <script>
+          (function(i, s, o, g, r, a, m) {
+              i['GoogleAnalyticsObject'] = r;
+              i[r] = i[r] || function() {
+                  (i[r].q = i[r].q || []).push(arguments)
+              }, i[r].l = 1 * new Date();
+              a = s.createElement(o),
+                  m = s.getElementsByTagName(o)[0];
+              a.async = 1;
+              a.src = g;
+              m.parentNode.insertBefore(a, m)
+          })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+          ga('create', 'UA-46623054-1', 'auto');
+          ga('send', 'pageview');
+      </script>
+  </head>
+
+  <body id="More_Games">
+  	<div class="card margin">
+      <h2 class="card-title">External Games</h2>
+      <p>
+        Want more games to play? Check out these games from Agame, Miniclip, CoolMath, and more game websites!
+      </p>
+    </div>
+      <div id="flash-game"></div>
+      <p class="spacer">&nbsp;</p>
+      <section>
+          <div class="layout-row">
+              <div class="column-layout">
+                  <a href="http://www.coolmath-games.com/0-coffee-shop" class="whole">
+                     <div class="game">
+                        <img src="coffee.png" width="315" height="265">
+                        <div class="description">
+                          <h3>Armor Games: Coffee Shop</h3>
+                        </div>
+                      </div>
+                  </a>
+                  <a href="http://www.coolmath-games.com/0-run-2" class="whole">
+                      <div class="game no-spacing">
+                        <img src="coffee.png" width="315" height="265">
+                        <div class="description">
+                          <h3>CoolMath-Games: Run 2</h3>
+                        </div>
+                      </div>
+                  </a>
+              </div>
+              <div class="column-layout">
+              	
+              </div>
+              <div class="column-layout">
+                <a href="http://www.coolmath-games.com/0-jelly-truck" class="whole">
+                    <div class="game">
+                      <img src="jelly-truck.jpg" width="315" height="265">
+                      <div class="description">
+                        <h3>CoolMath-Games: Jelly Truck</h3>
+                      </div>
+                    </div>
+                </a>
+                <a href="http://www.agame.com/game/lost-race" class="whole">
+                    <div class="game no-spacing">
+                      <img src="lost-race.jpg" width="315" height="265">
+                      <div class="description">
+                        <h3>Agame.com: Lost Race</h3>
+                      </div>
+                    </div>
+                </a>
+              </div>
+          </div>
+      </section>
+  </body>
+
+</html>

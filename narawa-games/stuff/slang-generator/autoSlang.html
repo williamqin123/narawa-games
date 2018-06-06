@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Slang Generator</title>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<meta name="description" content="The Narawa Games Slang Generator is a quick way to convert formal language into slang. It's a very reliable tool for jokes and pranks, too.">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../library/commonCore.css">
+		<style type="text/css">
+			* {
+				-webkit-box-sizing: content-box !important;
+				-moz-box-sizing: content-box !important;
+				box-sizing: content-box !important;
+			}
+			html, body {
+				font-family: "Open Sans", "Helvetica Neue", sans-serif;
+				color: #333;
+				line-height: 1.5;
+				height: auto;
+				text-align: center;
+			}
+			hr {
+				background: radial-gradient(farthest-side at 50% 100%, white 30%, transparent);
+				height: 98px;
+				border-width: 0 0 2px 0;
+				border-style: solid;
+				border-color: gray;
+				margin: 1rem 3rem -100px 3rem;
+				top: -100px;
+				display: block;
+			}
+			hr:after, hr:before {
+				content: "";
+				position: absolute;
+				top: 98px;
+				width: 4rem;
+				display: block;
+				height: 2px;
+			}
+			hr:after {
+				right: -4rem;
+				background: linear-gradient(to left, transparent, gray);
+			}
+			hr:before {
+				left: -4rem;
+				background: linear-gradient(to left, gray, transparent);
+			}
+			img {
+				z-index: 1000;
+			}
+			hr, img {
+				position: relative;
+			}
+			p {
+				margin: 0.7rem 0;
+			}
+			html {
+				font-size: 1em;
+				background-size: cover;
+				background-image: url("rap.jpg");
+				background-position: center;
+				padding: 0 3rem;
+				background-attachment: fixed;
+			}
+			body {
+				max-width: 900px;
+				margin: 3rem auto;
+				padding: 3rem;
+				font-size: 1.2rem;
+				min-width: 370px;
+				background-image: url("bg.jpg");
+				background-repeat: repeat;
+				border: rgba(0, 0, 0, 0.5) solid 1.5rem;
+				background-clip: padding-box;
+				outline: black solid 2px;
+				box-shadow: inset 0 0 0 2px black;
+			}
+			button, .text {
+				padding: 1rem 1.5rem;
+				border-width: 2px;
+				border-style: solid;
+			}
+			html body button {
+				appearance: none;
+				font-size: inherit;
+				color: inherit;
+				font-family: inherit;
+				line-height: 1;
+			}
+			p {
+				margin: 1rem 0;
+			}
+			html body #btn-1 {
+				border-color: firebrick;
+				background: linear-gradient(to bottom, salmon, crimson);
+				color: white;
+			}
+			html body #btn-2 {
+				border-color: gray;
+				background: linear-gradient(to bottom, white, silver);
+			}
+			.text {
+				border-color: gray;
+				background-color: white;
+				height: 300px;
+				text-transform: uppercase;
+				overflow-y: scroll;
+				white-space: normal;
+				margin-bottom: 1rem;
+			}
+		</style>
+		<script type="text/javascript">
+			var text;
+			var innerText;
+			String.prototype.replaceWord=function (word, replaceWith) {
+				var exReg=new RegExp(word+"!+", "gmi");
+				var peReg=new RegExp(word+"\\.+", "gmi");
+				var quReg=new RegExp(word+"\\?+", "gmi");
+				var spReg=new RegExp(word+"&nbsp;", "gmi");
+				var coReg=new RegExp(word+",+", "gmi");
+				return this
+				.replace(exReg, replaceWith+"!")
+				.replace(peReg, replaceWith+".")
+				.replace(quReg, replaceWith+"?")
+				.replace(coReg, replaceWith+",")
+				.replace(spReg, replaceWith+"&nbsp;");
+			}
+			function update() {
+				innerText=text[0].textContent;
+				//innerText=text[0].innerHTML;
+			}
+			function makeSlang(event) {
+				text=$(".text");
+				update();
+				var spaced="&nbsp;"+innerText+"&nbsp;";
+				var updateSlang=spaced
+					.replace(/\s/gmi, "&nbsp;")
+					.replace(/(&nbsp;)+\s*/gmi, "&nbsp;")
+					.replace(/'/gmi, "&apos;")
+					.replace(/-/gmi, "&ndash;")
+					.replaceWord("ing", "IN&apos;")
+					.replace(/\.(&nbsp;)*/gmi, ".&nbsp;")
+					.replace(/\?(&nbsp;)*/gmi, "?&nbsp;")
+					.replace(/\!(&nbsp;)*/gmi, "!&nbsp;")
+					.replace(/,(&nbsp;)*/gmi, ",&nbsp;")
+
+					.replaceWord("&nbsp;hi", "&nbsp;YO,&nbsp;DUDE")
+					.replace(/hello/gmi, "WHASSUP")
+					.replace(/(cool|great|amaze*|wonder(ful)*)/gmi, "SWAG")
+					.replaceWord("&nbsp;awe(some)*", "&nbsp;SWAGGY")
+					.replace(/(woman|girl|female)/gmi, "CHICK")
+					.replace(/you/gmi, "YO")
+					.replace(/(boy|male)/gmi, "GUY")
+					.replace(/really/gmi, "TOTALLY")
+					.replace(/very(&nbsp;|&ndash;)/gmi, "ULTRA&ndash;")
+					.replace(/funny/gmi, "GAGGIN&apos;")
+					.replace(/(have|bought|made|purchased|stolen*|had|saw|seen|understood|earned)/gmi, "GOT")
+					.replace(/(disgustin&apos;|gross)/gmi, "DIRTY")
+					.replace(/(bad|low(&ndash;|&nbsp;)quality)/gmi, "SUCKY")
+					.replaceWord("&nbsp;bor(e|in&apos;)", "&nbsp;SUCKY&ndash;NESS")
+					.replace(/(idiot|moron)/gmi, "SUCKER")
+					.replace(/want(&nbsp;|&ndash;)to/gmi, "WANNA")
+					.replace(/got(&nbsp;|&ndash;)to/gmi, "GOTTA")
+					.replaceWord("&nbsp;to", "&nbsp;TA")
+					.replace(/doofus/gmi, "BRAIN&ndash;RETARD")
+					.replace(/basically/gmi, "JUST")
+					.replace(/stupid/gmi, "STOWPID")
+					.replace(/darn/gmi, "DANG")
+					.replace(/don&apos;t(&nbsp;|&ndash;)know/gmi, "DUNNO")
+					.replace(/don&apos;t(&nbsp;|&ndash;)yo/gmi, "DONCHA")
+					.replace(/kind(&nbsp;|&mdash)of/gmi, "KINDA")
+					.replaceWord("in(&ndash;|&nbsp;)*to", "IN")
+					.replace(/otherwise/gmi, "OR&nbsp;ELSE")
+					.replace(/(sorry|consolate*(ion)*)/gmi, "TOO&nbsp;BAD")
+					.replace(/(relax|calm|meditate|yoga)/gmi, "CHILL&ndash;OUT")
+					.replace(/come(&nbsp;|mdash;)on/gmi, "C&apos;MON")
+					.replace(/(magazine|hassle)/gmi, "MAG")
+					.replace(/(see|buy|make|purchase|steal|understand|know|figure)/gmi, "GET")
+					.replace(/most/gmi, "GO&ndash;Y&apos;ALL")
+					.replaceWord("&nbsp;under", "&nbsp;DOWN")
+					.replace(/above/gmi, "UP&ndash;TOP")
+					.replace(/sex(ual)*(&nbsp;|&ndash;)*(photo(graph)*y*)*((vid)*eo)/gmi, "PORN")
+					.replace(/o*graphy/gmi, "&ndash;O")
+					.replace(/t*o*logy/gmi, "&ndash;TSO")
+					.replace(/star/gmi, "SHINER")
+					.replace(/concentrated*/gmi, "FOCUS")
+					.replaceWord("g*ist", "&ndash;MO")
+					.replace(/(talk|say)/gmi, "CHAT")
+					.replace(/(alive|on)/gmi, "UP")
+					.replace(/(strange|weird|crazy|silly|injured)/gmi, "MESSED&ndash;UP")
+					.replaceWord("&nbsp;aww*((&nbsp;|&ndash;)man)*", "&nbsp;SHOOT")
+					.replace(/(in)*toxic(ated*|f(ied|y))/gmi, "HIGH")
+					.replace(/(family|(old|ancient)(&nbsp;|&ndash;)doc(ument)*s*)/gmi, "FOLKS")
+					.replace(/old((&ndash;|&nbsp;)(timey|farmer|tale|hipster))*/gmi, "FOLK")
+					.replace(/&nbsp;parent/gmi, "&nbsp;FOLK")
+					.replace(/children/gmi, "KIDS")
+					.replace(/child/gmi, "KID")
+					.replaceWord("&nbsp;(car|shoes*)", "&nbsp;RIDE")
+					.replace(/(&nbsp;crim(e|inal)|&nbsp;jail|&nbsp;prizon(er)*|&nbsp;addict)/gmi, "&nbsp;THUG")
+					.replace(/t(&apos;)*s/gmi, "SS")
+					.replace(/whass&nbsp;up/gmi, "WHASSUP")
+					.replace(/angr(y|i)/gmi, "TICKED")
+					.replaceWord("&nbsp;mad(?=ness)", "&nbsp;TICKED")
+					.replace(/(provoke|anger|angst|harrass)/gmi, "TICK");
+				var dude="YO&nbsp;DUDE,&nbsp;WHASSUP?";
+				text.html(updateSlang);
+				if (updateSlang.indexOf(dude)==-1) {
+					text.html("&nbsp;"+dude+updateSlang);
+				}
+				update();
+				text.html(innerText.substring(1, innerText.length-1));
+			}
+			function slangChat() {
+				window.location="/chat?server=AutoSlang+Sponsor&amp;user=I+Love+Slang!";
+			}
+			$(document).ready(function () {
+				$("#btn-1").on("click", makeSlang);
+				$("#btn-1").on("touchend", makeSlang);
+				$("#btn-2").on("click", slangChat);
+				$("#btn-2").on("touchend", slangChat);
+			});
+		</script>
+	</head>
+	<body>
+		<img src="logo.png" width="370" height="100" class="logo" alt="AutoSlang Logo!">
+		<hr>
+		<p>
+		This is the Narawa Games Slang Generator! It's simple to use.
+		Just type formal language in the box below, and press the button.
+		The button&apos;ll generate slang language for you, instantly!</p><p>
+		But be sure to spell all the formal words correctly, or else the slang generator won&apos;t detect it.</p>
+		<div contenteditable="true" class="text">
+			TYPE&nbsp;FORMAL&nbsp;LANGUAGE&nbsp;HERE.&nbsp;.&nbsp;.
+		</div>
+		<button id="btn-1">Generate Slang!</button>
+		<button id="btn-2">Chat Room (Slang-Enabled)!</button>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-46623054-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
+	</body>
+</html>

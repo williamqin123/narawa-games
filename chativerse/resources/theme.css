@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700") all;
+html, body {
+	font-family: "Open Sans", sans-serif;
+	color: #333;
+	margin: 0;
+	line-height: 1.5;
+}
+body {
+	font-size: 1.25rem;
+}
+html {
+	font-size: 16px;
+}
+.block {
+	background-color: #ddd;
+}
+.wrapper {
+	background-color: #eee;
+}
+.box {
+	display: block;
+	margin: 1rem;
+	padding: 1rem 2rem;
+	border-radius: 0.5rem;
+	border: 1px solid silver;
+}
+.box:not(:first-child):not(:last-child) {
+
+}
+h1, h2, h3, h4 {
+	margin: 0;
+}
+h1 {
+	font-size: inherit;
+	font-weight: normal;
+}
+h2 {
+	font-size: 2.5rem;
+	font-weight: 700;
+}
+h3 {
+	font-size: 2rem;
+	font-weight: 600;
+}
+h4 {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+input, button, textarea {
+	font-size: inherit;
+	color: inherit;
+	font-family: inherit;
+	display: block;
+}
+input[type="text"], textarea {
+	padding: 0.5rem 1rem;
+	border: 1px solid gray;
+	box-shadow: inset 0 0.5rem 1rem -0.5rem black;
+}

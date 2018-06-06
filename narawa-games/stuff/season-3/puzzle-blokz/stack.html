@@ -1,0 +1,260 @@
+<!doctype html>
+<html>
+	<head>
+		<title>TOWERstacK ( Narawa Games )</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="Narawa games has a game called TOWER-STACK. You have to stack blocks simeltaniously on two towers. How high can you keep stacking?">
+		<link rel="stylesheet" type="text/css" href="../../library/commonCore.css">
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,700">
+		<style type="text/css">
+			body, html {
+				margin: 0;
+				font-family: "Roboto", sans-serif;
+				color: #333;
+				line-height: 1.5rem;
+			}
+			body, html {
+				position: relative;
+			}
+			html {
+				font-size: 16px;
+			}
+			body {
+				font-size: 1rem;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src="../../library/physics.js"></script>
+		<link rel="stylesheet" type="text/css" href="/library/index.css">
+		<script src="/library/boilerplate.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var images={
+				imageCount: 0,
+				neededImages: 14,
+				bg: null
+			};
+			var blocks={
+				width: 100,
+				actualHeight: 101,
+				height: 100,
+				colors: [],
+				rand: function () {
+					return blocks.colors[Math.floor(Math.random()*blocks.colors.length)];
+				}
+			};
+			var tower1={
+				height: 0,
+				stability: 0,
+				blockColors: [],
+				blockStability: [],
+				left: 300,
+				animationLag: 0,
+				offset: 0,
+				falling: 0
+			};
+			var tower2={
+				height: 0,
+				stability: 0,
+				blockColors: [],
+				blockStability: [],
+				left: 800,
+				animationLag: 0,
+				offset: 0,
+				falling: 0
+			};
+			var camera={
+				height: 300
+			};
+			var swinger={
+				rotation: 0,
+				contains: null,
+				letGo: false,
+				direction: "left"
+			};
+			var currentBlock={
+				top: 40,
+				left: 0
+			};
+			var game={
+				canvas: null,
+				ctx: null,
+				frameRate: 26,
+				dead: false,
+				die: function (Uarg) {
+					window.clearInterval(game.loop);
+					game.ctx.drawImage(Uarg, 199, 199, 802, 302);
+					game.ctx.drawImage(window.elementsReplay, 1048, 528, 142, 162);
+					game.dead=true;
+					game.canvas.on("click", function () {
+						window.location.reload(false);
+					});
+				},
+				collidex: function (obj) {
+					var lastObj=obj.blockStability[obj.blockStability.length-1];
+					var coll=currentBlock.left+blocks.width>=obj.left+lastObj && currentBlock.left<=obj.left+lastObj+blocks.width && currentBlock.top>=camera.height+obj.offset;
+					if (swinger.contains==obj.blockColors[obj.blockColors.length-1] && coll==true) {
+						window.setTimeout(function () {
+							game.die(window.diedYoFace);
+						}, 100);
+					}
+					return coll;
+				},
+				drawStacks: function (obj, gta5) {
+					var length=obj.blockColors.length;
+					var lefty=obj.left+gta5;
+					game.ctx.save();
+					game.ctx.translate(lefty, 900+blocks.height-Math.abs(obj.falling)*100);
+					game.ctx.rotate(obj.falling);
+					for (var x=length-4; x<length; x++) {
+						var index=length-x;
+						game.ctx.drawImage(obj.blockColors[x], obj.left+obj.blockStability[x]-lefty, camera.height+(index*blocks.height)-obj.animationLag+obj.offset-901-blocks.height, blocks.width, blocks.actualHeight);
+					}
+					if (obj.animationLag>=5) {
+						obj.animationLag-=5;
+					}
+					game.ctx.restore();
+				},
+				resetO: function () {
+					swinger.contains=blocks.rand();
+					swinger.letGo=false;
+					currentBlock.top=40;
+				},
+				tick: function () {
+					if (swinger.direction=="left") {
+						swinger.rotation-=10;
+						if (swinger.rotation<=0) {
+							swinger.direction="right";
+						}
+					}
+					else if (swinger.direction=="right") {
+						swinger.rotation+=10;
+						if (swinger.rotation>=1060) {
+							swinger.direction="left";
+						}
+					}
+					if (swinger.letGo==true) {
+						currentBlock.top+=10;
+					}
+					else if (swinger.letGo==false) {
+						currentBlock.left=swinger.rotation+20;
+					}
+					if (game.collidex(tower1)==true) {
+						var stable=currentBlock.left-tower1.left;
+						tower1.blockColors.push(swinger.contains);
+						tower1.stability=stable;
+						tower1.blockStability.push(stable);
+						tower1.animationLag=game.runLag(tower1, tower2, false);
+						tower2.animationLag=game.runLag(tower1, tower2, false);
+						tower2.offset+=game.runLag(tower1, tower2, false);
+						tower1.offset+=game.runLag(tower1, tower2, true);
+						game.resetO();
+					}
+					else if (game.collidex(tower2)==true) {
+						var stable2=currentBlock.left-tower2.left;
+						tower2.blockColors.push(swinger.contains);
+						tower2.stability=stable2;
+						tower2.blockStability.push(stable2);
+						tower1.animationLag=game.runLag(tower2, tower1, false);
+						tower2.animationLag=game.runLag(tower2, tower1, false);
+						tower1.offset+=game.runLag(tower2, tower1, false);
+						tower2.offset+=game.runLag(tower2, tower1, true);
+						game.resetO();
+					}
+					if (currentBlock.top>700) {
+						game.resetO();
+					}
+					if (Math.abs(tower1.stability)>=100) {
+						tower1.falling+=tower1.stability/6000;
+						if (Math.abs(tower1.falling)>=90*Math.PI/180) {
+							game.die(window.fell1);
+						}
+					}
+					if (Math.abs(tower2.stability)>=100) {
+						tower2.falling+=tower2.stability/6000;
+						if (Math.abs(tower2.falling)>=90*Math.PI/180) {
+							game.die(window.fell2);
+						}
+					}
+					if (tower1.offset>=300 || tower2.offset>=300) {
+						window.setTimeout(function () {
+							game.die(window.highUnbalanced);
+						}, 500);
+					}
+					if (game.dead==false) {
+						game.ctx.clearRect(0, 0, 1200, 700);
+						game.ctx.drawImage(swinger.contains, currentBlock.left, currentBlock.top-1, blocks.width, blocks.actualHeight);
+						game.drawStacks(tower1, 0);
+						game.drawStacks(tower2, blocks.width);
+						game.ctx.drawImage(window.elementsSwinger, swinger.rotation, 0, 140, 140);
+						game.ctx.font="normal 40px Roboto";
+						text(game.ctx, ((tower1.blockColors.length+tower2.blockColors.length)/2)+" Meters High", 600, 690, 340);
+					}
+				},
+				runLag: function(obj, obj2, yo) {
+					var re=0;
+					if (obj.blockColors.length>obj2.blockColors.length && yo==false) {
+						re=100;
+					}
+					else if (obj.blockColors.length<=obj2.blockColors.length && yo==true) {
+						re=-100;
+					}
+					return re;
+				},
+				press: function () {
+					if (swinger.letGo==false) {
+						swinger.letGo=true;
+					}
+				},
+				run: function () {
+					game.canvas.off();
+					$(window).on("keyup", game.press);
+					game.loop=window.setInterval(game.tick, game.frameRate);
+				}
+			};
+			function loadImage() {
+				images.imageCount++;
+				if (images.imageCount>=images.neededImages) {
+					game.ctx.drawImage(eval("window."+images.bg+"Start"), 0, 0, 1200, 700);
+					game.canvas.on("click", game.run);
+				}
+			}
+			$(document).ready(function () {
+				game.canvas=$("canvas");
+				var srcg=window.location.search;
+				images.bg=srcg.slice(3, 13);
+				game.canvas.css("background-image", "url("+images.bg+"Sky.jpg)");
+				game.ctx=game.canvas[0].getContext("2d");
+				game.ctx.textBaseline="bottom";
+				game.ctx.textAlign="center";
+				game.ctx.imageSmoothingEnabled=false;
+				game.ctx.lineWidth=6;
+				game.ctx.strokeStyle="black";
+				game.ctx.lineJoin="round";
+				game.ctx.drawText("Loading...", 400, 100);
+				initImages(["blockRed", "blockGreen", "blockBlue", "blockYellow", "elementsSwinger", "elementsReplay", "diedYoFace", "fell1", "fell2", "highUnbalanced"], "png");
+				initImages(["backgroundSky", "backgroundStart", "spaceSpaceSky", "spaceSpaceStart"], "jpg");
+				game.ctx.fillStyle="white";
+				for (var y=0; y<4; y++) {
+					tower1.blockColors.push(window.blockRed);
+					tower2.blockColors.push(window.blockBlue);
+					tower1.blockStability.push(0);
+					tower2.blockStability.push(0);
+				}
+				blocks.colors=[window.blockRed, window.blockBlue, window.blockYellow, window.blockGreen];
+				swinger.contains=blocks.rand();
+			});
+		</script>
+	</head>
+	<body>
+		<canvas width="1200" height="700"></canvas>
+		<main>
+			<div class="card">
+				<h2 class="card-title">
+					How to play
+				</h2>
+				Press the letter "A" key on your keyboard to drop a block. You can't put 2 blocks of the same color on top of each other. Try to keep your towers stable.
+			</div>
+			<p class="spacer">&nbsp;</p>
+		</main>
+	</body>
+</html>

@@ -1,0 +1,435 @@
+@import url("../library/commonCore.css") all;
+@import url("//fonts.googleapis.com/css?family=Exo+2:500italic,500,400,400italic") all;
+@import url("//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic") all;
+@import url("//fonts.googleapis.com/css?family=Bree+Serif") all;
+@import url("//code.jquery.com/ui/1.11.3/themes/sunny/jquery-ui.css") all;
+@import url("//fonts.googleapis.com/css?family=Economica:400,700,400italic,700italic") all;
+@import url("//fonts.googleapis.com/css?family=Carter+One") all;
+canvas {
+	margin: 0 auto;
+	display: block;
+}
+html {
+	font-size: 16px;
+	overflow-x: hidden;
+}
+.onhoverclicklight a:hover:after, .onhoverclicklight a:hover:before, .game span:before, .game span:after, .onhoverclicklight a:not(:last-child):after {
+	z-index: 100;
+	content: "";
+}
+.onhoverclicklight a:hover {
+	filter: brightness(1.5);
+	-webkit-filter: brightness(1.5);
+}
+canvas {
+	/*margin: 0 !important;*/
+}
+.layout-row {
+	display: table-row;
+}
+.ui-front {
+	z-index: 30000 !important;
+}
+.ui-dialog {
+	z-index: 40000 !important;
+}
+section {
+	border-spacing: 1rem;
+	margin: -1rem;
+	border: none;
+	border-collapse: separate;
+	table-layout: fixed;
+	display: table;
+}
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	border-bottom: 2px solid gray;
+	margin: 0;
+}
+.tagline {
+	margin-top: 0.25rem;
+	padding-left: 2rem;
+	color: gray;
+	font-family: "Exo 2", sans-serif;
+	font-weight: 500;
+	font-size: 0.9rem;
+}
+#flash-game, li {
+	min-height: 100px;
+}
+#flash-game {
+	background-image: url("../categories/playrun2.jpg");
+}
+li {
+	border-top: 2px solid gray;
+	clear: both;
+}
+html body main li.big {
+	min-height: 130px;
+}
+li img, .warningimg {
+	float: left;
+	padding-right: 1rem;
+	padding-bottom: 0.5rem;
+}
+html body .warning.game .warningimg {
+	padding-top: 0.5rem;
+	padding-left: 0.75rem;
+	padding-right: 0.5rem;
+}
+.column-layout {
+	vertical-align: top;
+	width: 315px;
+	padding: 0;
+	display: table-cell;
+	overflow: visible !important;
+}
+.new {
+	color: #fc1 !important;
+}
+footer {
+	margin-top: 3rem;
+	clear: both;
+	white-space: normal;
+}
+html body footer a[rel="license"] img {
+	vertical-align: middle;
+	border: 1px solid white;
+}
+footer {
+	background-image: url("../library/cool-accent.jpg");
+	background-repeat: repeat;
+}
+li a:hover h3 {
+	box-shadow: 0 2px #333;
+	background-color: white;
+}
+.dialog {
+	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+	background-color: white;
+	z-index: 150000;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	padding: 1rem 2rem;
+	max-width: 100%;
+	max-height: 100%;
+	overflow-y: scroll;
+}
+.c2 .column-layout {
+	box-sizing: border-box !important;
+}
+.c2 .column-layout:first-child {
+	width: 481px !important;
+}
+.c2 .column-layout:last-child {
+	width: 480px !important;
+}
+html body main nav.switcher, html body main li h3, a, span, .warning.game h3 {
+	display: inline-block !important;
+}
+.right-align, .dropdownarea {
+	text-align: right;
+}
+* {
+	white-space: normal;
+}
+html, body {
+	color: #333;
+	font-family: "Segoe UI", "Ubuntu", "Arial Rounded MT", sans-serif;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	background-color: #e7e4e0;
+}
+a {
+	text-decoration: none;
+	color: inherit;
+}
+p {
+	padding: 0;
+}
+p a {
+	color: dodgerblue !important;
+	border-bottom: 2px solid dodgerblue;
+	padding: 0 0.1rem;
+}
+body {
+	font-size: 1.2rem !important;
+}
+.column {
+	margin-right: 5px;
+}
+.vidit, html body main .game:not(#youAreAnIdiotYousSuckBallsSexy):hover {
+	background-color: #111;
+}
+h1 {
+	letter-spacing: 1px;
+	font-family: "Mail-Ray-Stuff", sans-serif;
+}
+h3, h4 {
+	font-family: "Bree Serif", sans-serif;
+}
+body > h1 {
+	margin-bottom: 3rem;
+}
+strong {
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+h2 {
+	font-size: 3rem;
+	text-align: center;
+	color: #222;
+}
+h3 {
+	font-size: 2rem !important;
+}
+.dropdownmenu {
+	max-height: 500px;	
+	overflow-y: scroll;
+}
+html, body, html body li h3, h1, .game span, .game, .clickplay, .game h3, .onhoverclicklight a {
+	position: relative;
+}
+header * {
+	white-space: normal !important;
+}
+h2 {
+	margin: 0 0 0.5rem 0;
+}
+h1, h3 {
+	margin: 0;
+}
+h3, .button {
+	font-size: 1.3rem;
+}
+.main, .shorty, .paddedleft {
+	background-repeat: no-repeat;
+}
+.game span:after, .onhoverclicklight a:not(:last-child):after {
+	background-color: black;
+	height: 1px;
+}
+header, .onhoverclicklight a:hover:before, .onhoverclicklight:not(.switcher) a:not(:last-child):after {
+	left: 0;
+	right: 0;
+}
+.game span:after {
+	left: -0.5rem;
+	right: -0.5rem;
+}
+.game span:after, .onhoverclicklight a:hover:before, .onhoverclicklight a:not(:last-child):after {
+	opacity: 0.5;
+}
+.gameplay, .clickplay {
+	display: none;
+}
+.paddedleft {
+	padding-left: 108px;
+}
+.list-item {
+	min-height: 84px;
+}
+.list-item-big {
+	min-height: 114px;
+}
+#flplaygame {
+	height: 600px;
+}
+#videoframe, #flplaygame, .game:after, .onhoverclicklight a:hover:after, .onhoverclicklight a:hover:before, .game span:before, .game span:after {
+	display: block;
+}
+.footer, .game span {
+	padding: 0.5rem;
+}
+.game:hover h3, .game:hover span {
+	z-index: 200 !important;
+	box-shadow: none !important;
+}
+.game span, .small, small {
+	font-size: 80%;
+}
+html body footer .footer .relly {
+	margin: 1rem -1rem;
+	padding: 1rem;
+	background-color: white;
+	color: #333;
+}
+.game:not(.stack):not(.no-spacing), p, .card.margin, .close-button-container {
+	margin-bottom: 1rem;
+}
+h1, footer, .game:hover, .warning {
+	color: white;
+}
+.whole, .dropdownmenu a {
+	display: block !important;
+}
+.card, li, .game-dialog {
+	padding: 1rem;
+}
+html body main .game:not(.warning), .onhoverclicklight a, .card {
+	background-color: white;
+}
+.game {
+	cursor: pointer;
+}
+.game a {
+	color: inherit;
+}
+.clickplay {
+	margin-top: 0.5rem;
+	z-index: 1000;
+}
+@font-face {
+	src: local("Mail-Ray-Stuff Regular"), local("Mail-Ray-Stuff"), url("mail-ray-stuff.ttf") format("truetype");
+	font-family: "Mail-Ray-Stuff";
+}
+
+
+
+
+
+
+
+
+nav.primary {
+	margin-top: 1rem;
+}
+nav.light, nav.light a {
+	border-color: white;
+}
+nav.dark, nav.dark a {
+	border-color: gray;
+	background-color: white;
+}
+nav {
+	border-width: 1px;
+	display: inline-block;
+}
+nav a {
+	border-width: 0 1px 0 0;
+	padding: 1rem;
+}
+nav, nav a {
+	border-style: solid;
+}
+nav a:last-child {
+	border: none;
+}
+img {
+	display: block;
+	margin: 0;
+}
+img.inline {
+	display: inline-block;
+}
+.game {
+	position: relative;
+}
+.tile:after {
+	content: "";
+	display: block;
+	clear: both;
+	height: 0;
+	width: auto;
+}
+.icon {
+	float: left;
+	margin-right: 1rem;
+	width: 100px;
+	height: 100px;
+}
+.description {
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.game .description {
+	font-size: 80%;
+	padding: 1em;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.75);
+	color: white;
+	bottom: -100%;
+	max-height: 100%;
+	box-sizing: border-box;
+	transition: all 0.5s;
+	right: 0;
+	left: 0;
+}
+.game:hover .description {
+	bottom: 0;
+}
+header {
+	padding: 2rem 1rem 5rem 1rem;
+	text-align: center;
+	color: white;
+}
+header, footer {
+	background-image: url(../library/wallpaper.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+.logo {
+	vertical-align: bottom;
+}
+main {
+	margin: -3rem auto 3rem auto;
+	width: 977px;
+	z-index: 1;
+}
+h1, h2, h3 {
+	margin: 0;
+}
+.card-title {
+	border-bottom: 1px solid gray;
+	margin: 0 -1rem 1rem -1rem;
+	padding: 0 1rem 1rem 1rem;
+}
+h2 {
+	font-family: "Carter One", sans-serif;
+	text-transform: uppercase;
+	font-weight: bold !important;
+}
+.uncollapse-margins {
+	font-size: 0;
+}
+h1 {
+	font-size: 4rem;
+}
+.card {
+	border: 1px solid gray;
+}
+.card.combine {
+	margin-bottom: -1px;
+}
+.rounded-corners {
+	border-radius: 0.5rem;
+}
+p:last-child {
+	margin-bottom: 0 !important;
+}
+p:first-child {
+	margin-top: 0 !important;
+}
+p {
+	line-height: 1.5;
+	margin-top: 1rem;
+}
+.description p {
+	line-height: 1.3;
+}
+p.spacer {
+	margin-top: 0;
+	margin-bottom: 0;
+	height: 1rem;
+	overflow: hidden;
+}
+#videoframe {
+	border: none;
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Robots Tower Defense (Original)</title>
+		<meta name="description" content="Narawa Games presents a long-wanted game: Robots Tower Defense 2! It&apos;s free, awesome, has crisp graphics, and will always be!">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="../../library/physics.js"></script>
+		<script type="text/javascript">
+			function imageRefresh() {}
+			function initCustom() {
+				initImages(["startPanel", "grass"], "jpg");
+				initImages(["singleShootTower", "spinBladeTower", "triShootTower", "blank", "explosionAnimationSprite", "robotAnimationSprite"], "png");
+			}
+		</script>
+		<script type="text/javascript" src="scriptEngine.js"></script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<canvas width="1200" height="600" style="background-image: url('grass.jpg')"></canvas>
+		<section>
+			<span id="money">Money: $10.00</span>
+			<img src="triShootTowerS.png" title="5" id="triShootTower">
+			<img src="spinBladeTowerS.png" title="10" id="spinBladeTower">
+			<img src="singleShootTowerS.png" title="3" id="singleShootTower">
+		</section>
+	</body>
+</html>

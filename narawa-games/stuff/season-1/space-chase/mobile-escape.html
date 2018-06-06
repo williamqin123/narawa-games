@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>SPACE CHASE ESCAPE</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			html, body {
+				height: 100%;
+				position: relative;
+			}
+			body {
+				margin: 0px;
+				border: 1px solid black;
+				background-image: url("iceage.png");
+				background-size: 100% 100%;
+				font-family: Arial, sans-serif;
+				font-size: 1.15em;
+			}
+			.tool {
+				display: none;
+			}
+			#box {
+				background-color: white;
+				text-align: center;
+				box-shadow: 0px 0px 0px 1000px rgba(0%, 0%, 0%, 0.75);
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				width: 615px;
+				height: 295px;
+				margin: -160px -320px;
+				display: none;
+				z-index: 1000;
+				padding: 25px;
+			}
+			.plank {
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+				z-index: 150;
+			}
+			.horiz {
+				background-image: url("plank.png");
+				height: 120px;
+				width: 200px;
+			}
+			.vertic {
+				background-image: url("plank2.png");
+				height: 200px;
+				width: 120px;
+			}
+			.goal {
+				height: 100px;
+				width: 150px;
+				background-image: url("goal.png");
+			}
+			.sprite {
+				position: absolute;
+			}
+			.toolbox {
+				bottom: 10px;
+				left: 50%;
+				margin-left: -240px;
+				width: 480px;
+				text-align: center;
+			}
+			.toolbox img {
+				width: 100px;
+				height: 100px;
+				background-color: rgba(75%, 85%, 100%, 0.5);
+				margin: 5px;
+				border: 1px solid rgba(65%, 80%, 100%, 0.75);
+			}
+			#ball {
+				top: 540px;
+				left: 32px;
+				z-index: 100;
+			}
+			#opponent {
+				top: 240px;
+				left: 32px;
+				z-index: 5;
+			}
+		</style>
+		<script type="text/javascript">
+			var moves=[5, -5];
+			var sleft=moves[Math.floor(Math.random()*2)];
+			var stop=moves[Math.floor(Math.random()*2)];
+			var selected="horiz";
+			function bounce() {
+				var ball=document.getElementById("ball");
+				var opponent=document.getElementById("opponent");
+				var touched=document.elementFromPoint(ball.offsetLeft+50, ball.offsetTop+50);
+				var opponenttouch=document.elementFromPoint(opponent.offsetLeft+50, opponent.offsetTop+50);
+				var box=document.getElementById("box");
+				if (touched!==null) {
+					if (touched.className=="plank sprite horiz") {
+						if (ball.offsetTop>touched.offsetTop+50 && ball.offsetTop<=touched.offsetTop+70) {
+							stop=5;
+						}
+						if (ball.offsetTop+100<touched.offsetTop+70 && ball.offsetTop+100>=touched.offsetTop+50) {
+							stop= -5;
+						}
+					}
+					else if (touched.className=="plank sprite vertic") {
+						if (ball.offsetLeft>touched.offsetLeft+50 && ball.offsetLeft<=touched.offsetLeft+70) {
+							sleft=5;
+						}
+						if (ball.offsetLeft+100<touched.offsetLeft+70 && ball.offsetLeft+100>=touched.offsetLeft+50) {
+							sleft= -5;
+						}
+					}
+					else if (touched.className=="plank sprite goal" && opponent.title=="opened") {
+						box.innerHTML="<img src='goal.png' height='200' width='350'><p>You escaped to your spaceship!</p>";
+						box.style.display="block";
+						clearInterval(window.redraw);
+					}
+					if (opponenttouch.id=="ball") {
+						box.innerHTML="<img src='alien2.png' width='200' height='200'><p>Too bad! You got caught by the bad monster.</p>";
+						box.style.display="block";
+						clearInterval(window.redraw);
+					}
+					if (opponenttouch.className=="plank sprite goal" && opponent.title!="opened") {
+						setTimeout(function () {
+							box.style.display="none";
+							window.redraw=setInterval(bounce, 25);
+						}, 5000);
+						opponent.setAttribute("title", "opened");
+						box.style.display="block";
+						clearInterval(window.redraw);
+					}
+					if (ball.offsetTop+100>=window.innerHeight) {
+						stop= -5;
+					}
+					if (ball.offsetTop<=0) {
+						stop=5;
+					}
+					if (ball.offsetLeft+100>=window.innerWidth) {
+						sleft= -5;
+					}
+					if (ball.offsetLeft<=0) {
+						sleft=5;
+					}
+				}
+				ball.style.left=ball.offsetLeft+sleft+"px";
+				ball.style.top=ball.offsetTop+stop+"px";
+				opponent.style.top=opponent.offsetTop+((ball.offsetTop-opponent.offsetTop)/65)+"px";
+				opponent.style.left=opponent.offsetLeft+((ball.offsetLeft-opponent.offsetLeft)/65)+"px";
+			}
+			function newsprite(event) {
+				var body=document.getElementsByTagName("BODY")[0];
+				if (event.target.tagName=="IMG") {
+					selected=event.target.title;
+				}
+				else {
+					if (event.clientX==0 && event.clientY==0 || event.clientX==undefined && event.clientY==undefined) {
+						window.removeEventListener(event.type, newsprite);
+						return;
+					}
+					var platform=document.createElement("DIV");
+					platform.setAttribute("class", "plank sprite "+selected);
+					body.appendChild(platform);
+					var measurement=[event.clientY, event.clientX];
+					var widthy=window.getComputedStyle(platform, null).getPropertyValue("width");
+					var heighthy=window.getComputedStyle(platform, null).getPropertyValue("height");
+					var toppy=parseInt(heighthy.substring(0, heighthy.indexOf("px")));
+					var lefty=parseInt(widthy.substring(0, heighthy.indexOf("px")));
+					platform.style.top=measurement[0]-(toppy/2)+"px";
+					platform.style.left=measurement[1]-(lefty/2)+"px";
+					if (selected=="goal") {
+						var goal=document.getElementById("win");
+						var tools=document.getElementsByClassName("tool");
+						goal.style.display="none";
+						for (x=0; x<tools.length; x++) {
+							tools[x].style.display="inline";
+						}
+						if (! window.redraw) {
+							window.redraw=setInterval(bounce, 25);
+						}
+					}
+				}
+			}
+			window.addEventListener("touchstart", newsprite);
+			window.addEventListener("mousedown", newsprite);
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<img src="alien.png" width="100" height="100" id="ball" class="sprite">
+		<img src="alien2.png" width="100" height="100" id="opponent" class="sprite">
+		<div class="toolbox sprite">
+			<img src="plank.png" title="horiz" class="tool">
+			<img src="plank2.png" title="vertic" class="tool">
+			<img src="goal.png" title="goal" id="win">
+			<a href="http://cool-gsm-games.appspot.com/space-chase.html">
+				<img src="trash.png">
+			</a>
+		</div>
+		<div id="box">
+			<img src="broken.png" height="200" width="350">
+			<p>
+				The bad monster crashed into your spaceship's window. Now it's broken,
+				and you can get in to escape!
+			</p>
+		</div>
+		<noscript>Oops, your browser doesn't support this game's Javascript.</noscript>
+	</body>
+</html>

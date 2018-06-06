@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Music Tiles</title>
+		<style type="text/css">
+			* {
+				box-sizing: content-box;
+			}
+			html, body {
+				font-size: 16px;
+				margin: 0;
+				background-color: mediumblue;
+				font-family: sans-serif;
+				line-height: 1.25;
+				color: white;
+			}
+			td {
+				vertical-align: top;
+			}
+			p {
+				margin: 1rem;
+			}
+			body {
+				overflow-x: scroll;
+				overflow-y: hidden;
+				top: 3.25rem;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				position: fixed;
+			}
+			#menu {
+				background-color: black;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+			}
+			#menu td {
+				padding: 0.5rem;
+			}
+			.button {
+				background-color: crimson;
+				display: inline-block;
+			}
+			table {
+				border-collapse: collapse;
+				table-layout: fixed;
+			}
+			#music-grid {
+				width: 1200px;
+				height: 100%;
+			}
+			table * {
+				border: none;
+			}
+			.padded {
+				padding: 0.5rem 1rem;
+				border-radius: 0.5rem;
+			}
+			input {
+				display: inline-block;
+				font-size: inherit;
+				background-color: white;
+				border: 1px solid black;
+				width: 100px;
+			}
+			#info {
+				width: 400px;
+				overflow-y: scroll;
+			}
+			#music-container {
+				height: 100%;
+			}
+			#music-grid td {
+				border: 1px solid white !important;
+			}
+			.activated {
+				background-color: black;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript">
+			var gridSize=[10, 10];
+			var grid = {
+				"piano": [
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false],
+					[false, false, false, false, false, false, false, false, false, false, false, false]
+				]
+			};
+			function repeat(s, n) { return new Array(n+1).join(s); }
+			function layout() {
+				$(".music-grid td:not(.info)").on("click", function(event) {
+					$(event.target).toggleClass("activated");
+				});
+			}
+			$(document).ready(function() {
+				layout();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="menu">
+			<table id="menu-layout">
+				<tr>
+					<td>
+						<span class="button padded">Play</span>
+					</td>
+					<td>
+						<span class="button padded">Stop</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<table id="music-container">
+			<tr>
+				<td id="info" rowspan="10">
+					<p>Tempo: <input type='number' class='padded' value='100'> BPM</p>
+				</td>
+				<td>
+					<table id="music-grid">
+						
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

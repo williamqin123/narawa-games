@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Angry Birds Knockout</title>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			body, html {
+				margin: 0px;
+				padding: 0px;
+				width: 850px;
+				white-space: normal;
+				background-color: #333;
+				color: white;
+				font-family: sans-serif;
+				font-size: medium;
+			}
+			p, h2 {
+				margin: 0.5rem 2rem;
+			}
+			#canvas {
+				background-image: url("circle.png");
+				margin-bottom: 1em;
+			}
+		</style>
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script type="text/javascript">
+			var birdOffset;
+			var total = 11;
+			var spritesX=[];
+			var spritesY=[];
+			var spriteMove=[false, false, false, false, false, false, false, false, false, false, false];
+			var moveY;
+			var moveX;
+			var dontdo=[false, false, false, false, false, false, false, false, false, false];
+			var pixOffset;
+			for (n=1; n<total; n++) {
+				spritesX[n]=Math.floor(Math.random()*450)+200;
+				spritesY[n]=Math.floor(Math.random()*450)+100;
+			}
+			function draw(sprite, x, y, sx, sy) {
+				if (sy==undefined) {
+					sy=sx;
+				}
+				window.canvas.drawImage(sprite, x-sx/2, y-sy/2, sx, sy);
+			}
+			function drawbase() {
+				window.canvas.clearRect(0, 0, 850, 650);
+				for (x=1; x<total; x++) {
+					if (dontdo[x-1]==false) {
+						draw(window.marble, spritesX[x], spritesY[x], 50);
+					}
+				}
+			}
+			function collide(pixOffset) {
+				moveX=pixOffset[0];
+				moveY=pixOffset[1];
+				for (k=0; k<total; k++) {
+					for (j=k+1; j<total; j++) {
+						if ((spritesX[k]+25>=spritesX[j]-25) && (spritesX[k]-25<=spritesX[j]+25) 
+							&& (spritesY[k]+25>=spritesY[j]-25) && (spritesY[k]-25<=spritesY[j]+25)) {
+							if (spriteMove[k]==true && spriteMove[j]==false) {
+								spriteMove[k]=false;
+								spriteMove[j]=true;
+								break;
+							}
+							if (spriteMove[j]==true) {
+								spritesX[j]=spritesX[j]+moveX;
+								spritesY[j]=spritesY[j]+moveY;
+							}
+						}
+					}
+					// if (spriteMove[j]==true) {
+					// 	spritesX[j]=spritesX[j]+moveX;
+					// 	spritesY[j]=spritesY[j]+moveY;
+					// }
+					if (spriteMove[k]==true) {
+						spritesX[k]=spritesX[k]+moveX;
+						spritesY[k]=spritesY[k]+moveY;
+					}
+				}
+			}
+			function shoot(event) {
+				$("#canvas").off("mousemove", movemarble);
+				pixOffset=[(event.clientX-spritesX[0])/10, (event.clientY-spritesY[0])/10];
+				spriteMove[0]=true;
+				var shooter=setInterval(function () {
+					pixOffset=[pixOffset[0]*0.95, pixOffset[1]*0.95];
+					collide(pixOffset);
+					drawbase();
+					draw(window.bird, spritesX[0], spritesY[0], 50);
+					if ((pixOffset[0]<=1 && pixOffset[1]<=1 && pixOffset[0]>=-1 && pixOffset[1]>=-1) || spritesX[0]<0 || spritesY[0]<0 || spritesX[0]>850 || spritesY[0]>650) {
+						$("#canvas").on("mousemove", movemarble);
+						spriteMove=[false, false, false, false, false, false, false, false, false, false, false];
+						clearInterval(shooter);
+					}
+				}, 100);
+				var logger=false;
+				for (t=1; t<total; t++) {
+					if (spritesX[t]<=200 || spritesY[t]<=100 || spritesX[t]>=650 || spritesY[t]>=550) {
+						dontdo[t]=true;
+					}
+					else {
+						logger=true;
+					}
+					if (t==10 && logger==false) {
+						alert("Yeah! You Win!");
+						setTimeout(function () {window.location="../car-race-x/race.html"}, 500);
+					}
+				}
+			}
+			function movemarble(event) {
+				if (event.clientX<=200 || event.clientX>=650 || event.clientY<=100 || event.clientY>=550) {
+					drawbase();
+					spritesX[0]=event.clientX;
+					spritesY[0]=event.clientY;
+					draw(window.bird, spritesX[0], spritesY[0], 50);
+				}
+			}
+			$(document).ready(function () {
+				window.canvas=$("#canvas")[0].getContext("2d");
+				window.marble=new Image();
+				window.marble.onload=drawbase;
+				window.marble.src="pig.png";
+				window.bird=new Image();
+				window.bird.src="bird.png";
+				$("#canvas").on("mousemove", movemarble);
+				$("#canvas").on("click", shoot);
+			});
+		</script>
+	</head>
+	<body>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-1', 'auto');ga('send', 'pageview');</script>
+		<audio autoplay>
+			<source src="intro.mp3">
+			<source src="intro.ogg">
+		</audio>
+		<canvas id="canvas" width="850" height="650"></canvas>
+		<h2>How to Play</h2>
+		<p>
+			Move your mouse around the circle to move the red marble.
+			Click inside the circle to shoot the red marble.
+			The goal of the game is to get all the green marbles outside the circle.
+		</p>
+	</body>
+</html>

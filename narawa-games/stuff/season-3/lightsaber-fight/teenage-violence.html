@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="This is Teenage Lightsaber Fights from Narawa Games. It&apos;s not too violent, but it&apos;s the first game to contain player&apos;s health meters.">
+		<title>Teenage Lightsaber Fights: The Game</title>
+		<style type="text/css">
+			html {
+				background-color: black;
+				font-size: 1em;
+				cursor: default;
+			}
+			body {
+				margin: 0 auto;
+				font-size: 1.3rem;
+			}
+			body, canvas {
+				width: 1000px;
+			}
+			canvas {
+				height: 600px;
+				background-image: url("backgroundWhiteRoom.jpg");
+				cursor: cell;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="../../library/physics.js"></script>
+		<script type="text/javascript">
+			var imagesCount=0;
+			var tickTock=0;
+			var mousePosition=[0, 0];
+			var oldMousePosition, leftOffset, loop;
+			function sliceArray() {
+				oldMousePosition=mousePosition.slice();
+			}
+			sliceArray();
+			var canvas, ctx;
+			var player={
+				health: 281,
+				healthCounter: 0,
+				position: 200,
+				lightsaberPosition: 0,
+				alpha: 1
+			};
+			var opponent={
+				health: 281,
+				healthCounter: 0,
+				position: 650,
+				lightsaberPosition: 0,
+				lightsaberRotation: 0,
+				lightsaberAI: 0.2,
+				alpha: 1
+			};
+			function tick() {
+				ctx.clearRect(0, 0, 1000, 600);
+				if (mousePosition[0]!=oldMousePosition[0] && opponent.health>0) {
+					opponent.health-=0.3;
+					opponent.healthCounter+=0.3;
+				}
+				tickTock=(tickTock+1)%4;
+				ctx.save();
+				if (opponent.health<=0 || player.health<=0) {
+					var message="";
+					var style="black";
+					if (opponent.health<=0 && opponent.alpha>=0.1) {
+						opponent.alpha=opponent.alpha-0.05;
+						message="You Win!";
+						style="navy";
+					}
+					if (player.health<=0 && player.alpha>=0.1) {
+						player.alpha=player.alpha-0.05;
+						message="You Died!";
+						style="maroon";
+					}
+					if (player.alpha>=0.95 && opponent.alpha>=0.95) {
+						window.setTimeout(function () {
+							ctx.globalAlpha=1;
+							ctx.save();
+							ctx.globalAlpha=0.5;
+							ctx.fillStyle=style;
+							ctx.fillRect(2, 53, 996, 545);
+							ctx.restore();
+							text(ctx, message, 500, 340, 800);
+							ctx.font="40px sans-serif";
+							text(ctx, "Click anywhere to replay!", 500, 400, 800);
+							canvas.on("click", function () {window.location.reload(false);});
+							window.clearInterval(loop);
+						}, 400);
+					}
+				}
+				ctx.globalAlpha=opponent.alpha;
+				ctx.drawImage(window.teenOpponent, opponent.position, 200, 150, 300);
+				ctx.restore();
+				ctx.globalAlpha=player.alpha;
+				ctx.drawImage(window.teenPlayer, player.position, 200, 150, 300);
+				ctx.restore();
+				player.lightsaberPosition=player.position+40;
+				var damage=(player.position+400-opponent.position)/800;
+				if (damage>=0 && player.health>0) {
+					player.health-=damage;
+					player.healthCounter+=damage;
+				}
+				if (mousePosition[0]>=player.position+250) {
+					player.position+=(mousePosition[0]-(player.position+250))/20;
+				}
+				else if (mousePosition[0]<=player.position) {
+					player.position-=(player.position-mousePosition[0])/20;
+				}
+				if (player.position+300<=opponent.position) {
+					opponent.position-=(opponent.position-(player.position+300))/30;
+				}
+				else if (player.position+300>=opponent.position+100) {
+					opponent.position+=((player.position+300)-(opponent.position+100))/30;
+				}
+					ctx.save();
+					ctx.translate(player.lightsaberPosition, 330);
+					ctx.rotate((mousePosition[1]-350)/100);
+					ctx.drawImage(window.redSaber, -10, -10, 300, 50);
+					ctx.restore();
+				opponent.lightsaberPosition=opponent.position+100;
+				if (opponent.lightsaberRotation>1 || opponent.lightsaberRotation<-1) {
+					opponent.lightsaberAI=opponent.lightsaberAI*(-1);
+				}
+				if (opponent.healthCounter>=5) {
+					opponent.healthCounter=0;
+				}
+				if (player.healthCounter>=5) {
+					player.healthCounter=0;
+				}
+				opponent.lightsaberRotation+=opponent.lightsaberAI;
+					ctx.save();
+					ctx.translate(opponent.lightsaberPosition, 330);
+					ctx.rotate(opponent.lightsaberRotation);
+					ctx.drawImage(window.blueSaber, -290, -10, 300, 50);
+					ctx.restore();
+				ctx.fillRect(205, 10, player.health+player.healthCounter, 30);
+				var varyosup=514+(281-(opponent.health+opponent.healthCounter));
+				var varsup22=795-varyosup;
+				if (varsup22<0) {
+					varsup22=0;
+				}
+				ctx.fillRect(varyosup, 10, varsup22, 30);
+				if (tickTock==0) {
+					sliceArray();
+				}
+			}
+			function ready() {
+				ctx.drawImage(window.window.startScreen, 0, 0, 1000, 600);
+				canvas.on("click", function () {
+					canvas.off();
+					canvas.on("mousemove", function (event) {
+						mousePosition=[event.clientX-leftOffset, event.clientY];
+					});
+					loop=window.setInterval(tick, 17);
+				});
+			}
+			function loadImage() {
+				imagesCount++;
+				if (imagesCount>=6) {
+					ready();
+				}
+			}
+			$(document).ready(function () {
+				canvas=$("canvas");
+				ctx=canvas[0].getContext("2d");
+				ctx.font="80px sans-serif";
+				ctx.textAlign="center";
+				ctx.textBaseline="bottom";
+				ctx.strokeStyle="black";
+				ctx.lineWidth=8;
+				ctx.fillStyle="white";
+				ctx.lineJoin="miter";
+				ctx.miterLimit=2;
+				if (navigator.userAgent.indexOf("WebKit")==-1) {
+					ctx.imageSmoothingEnabled=false;
+				}
+				text(ctx, "Loading Images...", 500, 340, 800);
+				leftOffset=parseInt(canvas[0].getBoundingClientRect().left);
+				initImages(["teenPlayer", "teenOpponent", "redSaber", "blueSaber"], "png");
+				initImages(["backgroundWhiteRoom", "startScreen"], "jpg");
+			});
+		</script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-46623054-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</head>
+	<body>
+		<canvas width="1000" height="600"></canvas>
+		<audio controls loop autoplay>
+			<source src="music.mp3">
+		</audio>
+	</body>
+</html>

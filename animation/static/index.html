@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Animator Studio Professional</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="Animator Studio is a popular amuteur animation software online web-app. You can choose from a variety of sprites, and make them animate however you want! Note: this doesn&apos;t support old browsers.">
+		<style type="text/css">
+			* {
+				vertical-align: middle;
+				font-weight: normal;
+			}
+			hr {
+				height: 2px;
+				border: none;
+				margin: 10px -10px;
+			}
+			html, body {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				width: 100%;
+				font-family: "Helvetica Neue", "Segoe UI", "Calibri", sans-serif;
+				position: relative;
+				background-size: 100% 100%;
+				overflow: hidden;
+				font-size: 20px;
+				color: #333;
+				line-height: 1.3;
+			}
+			.sidebar {
+				position: fixed;
+				top: 100px;
+				bottom: 100px;
+				padding: 10px;
+				width: 250px;
+				overflow-y: auto;
+			}
+			.panel {
+				height: 100px;
+				overflow-x: auto;
+				overflow-y: hidden;
+				white-space: nowrap;
+				color: white;
+				padding-left: 10px;
+				font-size: 0;
+				position: absolute;
+				left: 0;
+				right: 0;
+				z-index: 1000;
+			}
+			.spritemaker, .sidebar, .screen {
+				background-color: gainsboro;
+			}
+			.panel, .spriteselected, .button, hr {
+				background-color: slategray;
+			}
+			.screen.selected {
+				background-color: white;
+			}
+			.spritemaker {
+				padding: 10px;
+			}
+			#selector {
+				height: 200px;
+				background-color: white;
+				margin: 10px;
+				text-align: center;
+				overflow-y: auto;
+			}
+			#filmstrip {
+				top: 0;
+			}
+			#spriter {
+				bottom: 0;
+			}
+			h3 {
+				margin: 0 0 10px 0;
+			}
+			.screen {
+				width: 100px;
+				height: 80px;
+			}
+			span {
+				display: inline-block;
+			}
+			.screen, .spritemaker, #add {
+				margin: 10px 10px 0 0;
+			}
+			.button {
+				padding: 10px 20px;
+				color: white;
+				margin-right: 10px;
+			}
+			.sprite {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			.selected, .spriteselected, .button {
+				color: white;
+			}
+			#selector div {
+				margin-bottom: -2px;
+			}
+			table {
+				border-spacing: 5px;
+				margin: -5px;
+			}
+			.uiscrollview {
+				overflow: scroll;
+				white-space: nowrap;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script type="text/javascript">
+			var selected=0;
+			var Xcoords=[];
+			var Ycoords=[];
+			var rotation=[];
+			var scalation=[];
+			var selectionSprite=0;
+			function refresh() {
+				selectionSprite=selected*($(".sprite").length)+(Array.prototype.slice.call($("#selector")[0].children).indexOf($(".spriteselected")[0]));
+				for (y=0; y<$(".sprite").length; y++) {
+					$(".sprite")[y].style.top=Ycoords[selected*($(".sprite").length)+y]+"px";
+					$(".sprite")[y].style.left=Xcoords[selected*($(".sprite").length)+y]+"px";
+					$(".sprite")[y].style.transform="rotate("+rotation[selected*($(".sprite").length)+y]+"deg)"+" scale("+scalation[selected*($(".sprite").length)+y]+")";;
+				}
+			}
+			function mover(event, dragger) {
+				for (y=0; y<$(".sprite").length; y++) {
+					if ($(".sprite")[y]==window.dragger) {
+						Xcoords[selected*($(".sprite").length)+y]=event.clientX-50;
+						Ycoords[selected*($(".sprite").length)+y]=event.clientY-50;
+					}
+				}
+				refresh();
+			}
+			function ranger(event) {
+				rotation[selectionSprite]=event.target.value;
+				refresh();
+			}
+			function scaler(event) {
+				scalation[selectionSprite]=event.target.value;
+				refresh();
+			}
+			function upper() {
+				window.dragger=null;
+				$(window).off("mousemove", mover);
+				$(window).off("mouseup", upper);
+			}
+			function helper(event) {
+				$("#help").html(event.target.dataset.desc);
+			}
+			function animate(event) {
+				if (event.target.className=="screen") {
+					$(".screen").attr("class", "screen");
+					for (x=0; x<$(".screen").length; x++) {
+						if ($(".screen")[x]==event.target) {
+							selected=x;
+							$(".screen")[selected].className="screen selected";
+						}
+					}
+					refresh();
+				}
+				if (event.target.parentNode.id=="selector") {
+					$(".spriteselected").attr("class", "");
+					$(".sprite").css({"border":"none", "background-color":"transparent"});
+					event.target.className="spriteselected";
+					refresh();
+					var currentSelectedAnimatedSprite=Array.prototype.slice.call($("#selector")[0].children).indexOf($(".spriteselected")[0]);
+					$(".sprite")[currentSelectedAnimatedSprite].style.backgroundColor="rgba(0, 0, 255, 0.5)";
+				}
+				if (event.target.className.indexOf("background")>=0) {
+					document.body.style.backgroundImage="url('"+event.target.src+"')";
+				}
+				if (event.target.className.indexOf("sprite")>=0) {
+					window.dragger=event.target;
+					$(window).on("mousemove", mover);
+					$(window).on("mouseup", upper);
+				}
+				if (event.target.id.indexOf("add")>=0) {
+					var newscreen=document.createElement("span");
+					newscreen.className="screen";
+					$("#film")[0].appendChild(newscreen);
+					for (n=0; n<$(".sprite").length; n++) {
+						Xcoords.push($(".sprite")[n].offsetLeft);
+						Ycoords.push($(".sprite")[n].offsetTop);
+						rotation.push(rotation[selected*($(".sprite").length)+n]);
+						scalation.push(scalation[selected*($(".sprite").length)+n]);
+					}
+				}
+				if (event.target.className.indexOf("spritemaker")>=0) {
+					var newsprite=document.createElement("div");
+					var sellist=document.createElement("div");
+					sellist.innerHTML=event.target.src.substring(event.target.src.lastIndexOf("/")+1, event.target.src.length-4);
+					$("#selector")[0].appendChild(sellist);
+					newsprite.className="sprite";
+					newsprite.style.backgroundImage="url('"+event.target.src+"')";
+					document.body.appendChild(newsprite);
+					for (b=0; b<$(".screen").length; b++) {
+						Xcoords.splice(b*$(".sprite").length+1, 0, 300);
+						Ycoords.splice(b*$(".sprite").length+1, 0, 200);
+						rotation.splice(b*$(".sprite").length+1, 0, 0);
+						scalation.splice(b*$(".sprite").length+1, 0, 1);
+					}
+					refresh();
+				}
+				if (event.target.className.indexOf("play")>=0) {
+					for (j=0; j<$(".sprite").length; j++) {
+						for (g=0; g<$(".screen").length; g++) {
+							(function () {
+								var time=j;
+								var transition=g;
+								setTimeout(function () {
+									$(".sprite")[time].style.transition="0.5s linear";
+									$(".sprite")[time].style.top=Ycoords[transition*($(".sprite").length)+time]+"px";
+									$(".sprite")[time].style.left=Xcoords[transition*($(".sprite").length)+time]+"px";
+									$(".sprite")[time].style.transform="rotate("+rotation[transition*($(".sprite").length)+time]+"deg)"+" scale("+scalation[transition*($(".sprite").length)+time]+")";
+								}, 500*transition+1);
+							})();
+						}
+					}
+					setTimeout(function () {
+						$(".sprite").css({"transition":"none"});
+					}, 500*$(".screen").length);
+				}
+				if (event.target.className.indexOf("reset")>=0) {
+					window.location.reload(false);
+				}
+			}
+			$(document).ready(function () {
+				$(window).on("mousedown", animate);
+				$(window).on("mouseover", helper);
+			});
+		</script>
+	</head>
+	<body data-desc="This is the edit area. Put sprites and animate them here.">
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-46623054-2', 'auto');ga('send', 'pageview');</script>
+		<div id="filmstrip" class="panel" data-desc="This is the filmstrip. It has all your keyframes on it. Click on one to edit a frame.">
+			<span id="film">
+				<span class="screen"></span>
+			</span>
+			<img src="plus.png" id="add" width="100" height="80" data-desc="Click on the plus to add a keyframe.">
+		</div>
+		<div class="sidebar" style="left: 0;">
+			<h3>Sprite Settings</h3>
+			Selected Sprite
+			<div id="selector">
+			</div>
+			Rotation <input type="range" value="0" max="360" min="-360" onmouseup="ranger(event)"><br>
+			Scale <input type="range" value="1" max="5" min="0" onmouseup="scaler(event)">
+		</div>
+		<div class="sidebar" style="right: 0;">
+			<span class="button play" data-desc="Click here to play the animation.">
+				<img src="play.png" width="20" height="20" class="play">Play
+			</span>
+			<span class="button reset" data-desc="Click here to START OVER.">
+				<img src="trash.png" width="20" height="20" class="reset">Reset
+			</span>
+			<hr>
+			<h3>Scene Background</h3>
+			<div class="uiscrollview">
+				<table>
+					<tr>
+						<td>
+							<img src="canyon.png" width="120" height="100" class="background">
+						</td>
+						<td>
+							<img src="action.png" width="120" height="100" class="background">
+						</td>
+						<td>
+							<img src="factory.png" width="120" height="100" class="background">
+						</td>
+					</tr>
+				</table>
+			</div>
+			<hr>
+			<h3>Animation Help</h3>
+			<div id="help" data-desc="This is the help panel. I&apos;ll tell you what everything is."></div>
+		</div>
+		<div id="spriter" class="panel" data-desc="This is the sprite bar. Click on an animation sprite to use it. Do not drag!">
+			<img src="sonic.png" width="60" height="60" class="spritemaker">
+			<img src="robot.png" width="60" height="60" class="spritemaker">
+			<img src="arm.png" width="60" height="60" class="spritemaker">
+			<img src="shoe.png" width="60" height="60" class="spritemaker">
+			<img src="rocket.png" width="60" height="60" class="spritemaker">
+		</div>
+	</body>
+</html>

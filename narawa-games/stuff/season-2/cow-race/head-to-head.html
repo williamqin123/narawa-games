@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cow Race Head to Head</title>
+		<style type="text/css">
+			html {
+				background-color: black;
+				font-size: 1em;
+				height: 100%;
+				width: 100%;
+			}
+			html, body {	
+				font-family: "Candara", "Helvetica Heue", "Segoe UI", "Verdana", sans-serif;
+				font-weight: bold;
+				text-align: center;
+			}
+			body {
+				margin: 0 auto;
+				width: 1200px;
+				background-image: url("start.png");
+				background-size: 100% 100%;
+				height: 700px;
+				font-size: 1.5rem;
+				position: relative;
+			}
+			img {
+				width: 250px;
+				height: 200px;
+				box-shadow: 0 0 50px black;
+				margin: 0 5px;
+			}
+			img, #box {
+				border: 2px solid black;
+				box-shadow: 0 0 25px black, inset 0 0 50px dodgerblue;
+				border-radius: 5px;
+			}
+			#imgcontainer {
+				position: absolute;
+				top: 250px;
+				width: 1200px;
+				font-size: 0;
+			}
+			h1, p {
+				margin: 15px 0;
+			}
+			h1 {
+				font-size: 2.5rem;
+			}
+			#box {
+				background: linear-gradient(white, lightblue);
+				width: 1000px;
+				position: absolute;
+				top: 287px;
+				left: 96px;
+				display: none;
+			}
+		</style>
+		<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript">
+			var height=[];
+			var canvas;
+			var cowpos=450;
+			var oppopos=450;
+			var gameoffset=0;
+			var correct=false;
+			var current;
+			var oppoposx=450;
+			var keypressed=false;
+			var oppo=0;
+			var loadedcounter=0;
+			function draw() {
+				canvas.clearRect(0, 0, 1200, 700);
+				for (y=0; y<height.length; y++) {
+					var drawit=window.block;
+					if (height[y]>height[y-1]) {
+						drawit=window.newblock;
+					}
+					if (height[y]>height[y+1]) {
+						drawit=window.newblock2;
+					}
+					canvas.drawImage(drawit, y*150+450+gameoffset, 750-height[y], 150, 150);
+					canvas.drawImage(window.dirt, y*150+450+gameoffset, 900-height[y], 150, 150);
+					canvas.drawImage(window.dirt, y*150+450+gameoffset, 1050-height[y], 150, 150);
+					canvas.drawImage(window.dirt, y*150+450+gameoffset, 1200-height[y], 150, 150);
+				}
+				current=((Math.abs(gameoffset)+525)/150).toFixed(0)-4;
+				correct=false;
+				canvas.save();
+				canvas.translate(525, 750-cowpos);
+				if (keypressed=="38") {
+					if (height[current]<height[current+1]) {
+						cowpos=cowpos+30;
+						canvas.rotate(-0.5);
+						correct=true;
+					}
+				}
+				if (keypressed=="40") {
+					if (height[current]>height[current+1]) {
+						cowpos=cowpos-30;
+						canvas.rotate(0.5);
+						correct=true;
+					}
+				}
+				if (height[current]==height[current+1]) {
+					correct=true;
+				}
+				if (correct==true) {
+					gameoffset=gameoffset-30;
+					oppoposx=oppoposx-30;
+				}
+				canvas.drawImage(window.you, -75, 0, 150, 190);
+				canvas.restore();
+				oppoposx=oppoposx+25;
+				canvas.save();
+				canvas.translate(oppoposx+75, 750-oppopos);
+				if (height[oppo]<height[oppo+1]) {
+					oppopos=oppopos+25;
+					canvas.rotate(-0.5);
+				}
+				if (height[oppo]>height[oppo+1]) {
+					oppopos=oppopos-25;
+					canvas.rotate(0.5);
+				}
+				oppo=((Math.abs(gameoffset)+(oppoposx+75))/150).toFixed(0)-4;
+				canvas.drawImage(window.him, -75, 0, 150, 190);
+				canvas.restore();
+				if (oppo>=99 || current>=99) {
+					$("#box")[0].style.display="block";
+					if (oppo>=99 && current<99) {
+						$("#box").html("<h1>Your Cow Lost The Race!</h1>");
+					}
+					if (current>=99 && oppo<99) {
+						$("#box").html("<h1>Your Cow Wins The Race!</h1>");
+					}
+					if (current>=99 && oppo>=99) {
+						$("#box").html("<h1>Your Cow And The Bull Tie The Race!</h1>");
+					}
+					$("#box")[0].innerHTML=$("#box")[0].innerHTML+"<p>Click anywhere to play again!</p>";
+					$(window).on("click", function () {
+						window.location.reload(false);
+					});
+					clearInterval(window.runner);
+				}
+			}
+			function startgame() {
+				canvas.strokeText("Loading...", 600, 300);
+				canvas.fillText("Loading...", 600, 300);
+				window.checker=setInterval(function () {
+					if (loadedcounter>=6) {
+						clearInterval(window.checker);
+						window.runner=setInterval(draw, 50);
+					}
+				}, 100);
+			}
+			function loadcount() {
+				loadedcounter++;
+			}
+			$(document).ready(function () {
+				var choices=[-150, -150, 0, 150, 150];
+				var oldx=300;
+				var way=0;
+				canvas=$("canvas")[0].getContext("2d");
+				for (x=0; x<100; x=x+2) {
+					if (height[x-1]>=600) {
+						way=-150;
+					}
+					if (height[x-1]<=150) {
+						way=150;
+					}
+					height[x]=oldx+way;
+					height[x+1]=oldx+way;
+					way=choices[Math.floor(Math.random()*5)];
+					oldx=height[x];
+				}
+				window.background1=new Image();
+				window.background1.onload=loadcount;
+				window.background1.src="bg.png";
+				window.background2=new Image();
+				window.background2.onload=loadcount;
+				window.background2.src="ice.png";
+				window.background3=new Image();
+				window.background3.onload=loadcount;
+				window.background3.src="desert.png";
+				window.background4=new Image();
+				window.background4.onload=loadcount;
+				window.background4.src="space.png";
+				window.startscreen=new Image();
+				window.startscreen.onload=loadcount;
+				window.startscreen.src="start.png";
+
+				window.block=new Image();
+				window.block.onload=loadcount;
+				window.block.src="block.png";
+				window.newblock=new Image();
+				window.newblock.onload=loadcount;
+				window.newblock.src="up.png";
+				window.newblock2=new Image();
+				window.newblock2.onload=loadcount;
+				window.newblock2.src="down.png";
+				window.dirt=new Image();
+				window.dirt.onload=loadcount;
+				window.dirt.src="dirt.png";
+				window.you=new Image();
+				window.you.onload=loadcount;
+				window.you.src="cow.png";
+				window.him=new Image();
+				window.him.onload=loadcount;
+				window.him.src="bull.png";
+				canvas.font="normal bolder 100px sans-serif";
+				canvas.textAlign="center";
+				canvas.fillStyle="white";
+				canvas.strokeStyle="black";
+				canvas.lineWidth=8;
+				canvas.lineJoin="miter";
+				canvas.miterLimit=2;
+				$("img").on("click", function (event) {
+					$("body")[0].style.backgroundImage="url('"+event.target.src+"')";
+					$("#imgcontainer").remove();
+					startgame();
+				});
+			});
+			$(window).on("keydown", function (event) {keypressed=event.keyCode;});
+			$(window).on("keyup", function (event) {
+				if (event.keyCode==keypressed) {
+					keypressed=false;
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="box"></div>
+		<div id="imgcontainer">
+			<img src="bg.png">
+			<img src="ice.png">
+			<img src="desert.png">
+			<img src="space.png">
+		</div>
+		<canvas width="1200" height="700"></canvas>
+		<audio controls autoplay loop>
+			<source src="music.mp3">
+		</audio>
+	</body>
+</html>
